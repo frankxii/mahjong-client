@@ -32,7 +32,7 @@ public class NetworkManager : MonoBehaviour
         int port = 8000;
         _peer = new Peer();
         _peer.Connect(host, port);
-        Login(123);
+        Login(1);
     }
 
     private void Update()

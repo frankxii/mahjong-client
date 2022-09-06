@@ -32,5 +32,10 @@ public class Peer : PeerBase
     {
         Debug.Log("OnOperationResponse");
         Debug.Log(response.returnCode);
+        Dictionary<short, object> data = response.parameters;
+        string username = data[0].ToString();
+        int coin = (int) Convert.ToInt64(data[1]);
+        Debug.Log(data[2].GetType());
+        Debug.Log($"username {username}, coin {coin}");
     }
 }
