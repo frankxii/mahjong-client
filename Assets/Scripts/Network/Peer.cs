@@ -8,14 +8,13 @@ public class Peer : PeerBase
 {
     public override void OnConnected(string message)
     {
-        Debug.Log("OnConnected");
+        Debug.Log("服务器已连接");
     }
 
     public override void OnDisConnect(Exception connectException)
     {
-        Debug.Log("OnDisConnect");
+        Debug.Log("服务器已断开");
     }
-
 
     public override void OnEvent(short eventCode, Dictionary<short, object> dict)
     {
