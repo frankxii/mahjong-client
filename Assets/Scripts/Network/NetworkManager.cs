@@ -24,12 +24,14 @@ public class NetworkManager : MonoBehaviour
         if (Instance is null)
         {
             Instance = this;
+            Connect();
         }
 
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start()
+
+    private void Connect()
     {
         string host = "127.0.0.1";
         int port = 8000;
@@ -76,6 +78,6 @@ public class NetworkManager : MonoBehaviour
         // 关闭登录页面，调起大厅，同时更新大厅数据
         GameObject.Find("Login").SetActive(false);
         lobby.SetActive(true);
-        lobby.GetComponent<Lobby>().UpdateProfile(coin, diamond);
+        lobby.GetComponent<Lobby>().UpdateProfile(coin, diamond, gender);
     }
 }

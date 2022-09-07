@@ -3,7 +3,22 @@ guid: 6792e1bf63e3e4d5da1d35a4f67c42d7
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - rechargeCoin: {instanceID: 0}
+  - rechargeDiamond: {instanceID: 0}
+  - dailyRewards: {instanceID: 0}
+  - generalMode: {instanceID: 0}
+  - createRoom: {instanceID: 0}
+  - joinRoom: {instanceID: 0}
+  - task: {instanceID: 0}
+  - sameCity: {instanceID: 0}
+  - mall: {instanceID: 0}
+  - events: {instanceID: 0}
+  - setting: {instanceID: 0}
+  - coinNumber: {instanceID: 0}
+  - diamondNumber: {instanceID: 0}
+  - boyAvatar: {fileID: 21300000, guid: e596b816b021c467cab51d8102d47e64, type: 3}
+  - girlAvatar: {fileID: 21300000, guid: 2488d61373e5f4eacac86f91ae16089c, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

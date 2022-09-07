@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,9 @@ public class Lobby : MonoBehaviour
     public Button createRoom, joinRoom;
     public Button task, sameCity, mall, events, setting;
     public Text coinNumber, diamondNumber;
+    public Image avatar;
+    public Sprite boyAvatar, girlAvatar;
+
 
     // 更新金币数量
     public void UpdateCoinNumber(int number)
@@ -25,9 +29,10 @@ public class Lobby : MonoBehaviour
     }
 
     // 登录后更新用户信息
-    public void UpdateProfile(int coinNumber, int diamondNumber)
+    public void UpdateProfile(int coinNumber, int diamondNumber, int gender)
     {
         UpdateCoinNumber(coinNumber);
         UpdateDiamondNumber(diamondNumber);
+        avatar.sprite = gender == 1 ? boyAvatar : girlAvatar;
     }
 }
