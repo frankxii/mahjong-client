@@ -60,6 +60,7 @@ public class CreateRoom : MonoBehaviour
         // 是否允许吃
         bool hasChi = selectedToggle.name == "CanChiToggle";
         int gameCycleNumber = GetGameCycleNumber();
+        
     }
 
     // 更新钻石开销文本

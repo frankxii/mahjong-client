@@ -21,6 +21,6 @@ public class Login : MonoBehaviour
     private void OnClick()
     {
         int id = Convert.ToInt32(username.text);
-        NetworkManager.Instance.Login(id);
+        
     }
 }
