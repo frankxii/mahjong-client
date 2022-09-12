@@ -7742,5 +7742,6 @@ PrefabInstance:
       propertyPath: lobby
       value: 
       objectReference: {fileID: 2022004593}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7482792965888575947, guid: 945337b2604154f048f432ecaa1c7d2e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 945337b2604154f048f432ecaa1c7d2e, type: 3}

@@ -50,18 +50,14 @@ namespace Protocol
         /// <summary>
         /// 解析协议消息参数
         /// </summary>
-        /// <param name="message"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static T DecodeBody<T>(byte[] message)
+        /// <param name="message">消息read buffer</param>
+        /// <returns>响应json字符串</returns>
+        public static string DecodeJsonBody(byte[] message)
         {
             short length = BitConverter.ToInt16(message);
             byte[] jsonByte = message.Skip(4).Take(length - 4).ToArray();
-            // 获取json字符串
-
             string json = Encoding.UTF8.GetString(jsonByte);
-            Console.WriteLine(json);
-            return JsonUtility.FromJson<T>(json);
+            return json;
         }
     }
 }
