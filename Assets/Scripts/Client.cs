@@ -21,13 +21,13 @@ public class NetManager
     private byte[] _readBuffer = new byte[BUFFER_SIZE]; //接收缓冲区
     private short _bufferCount; //有效字节数
 
-    private static Dictionary<MessageId, View> router = new();
+    private static Dictionary<MessageId, Action<Message>> router = new();
 
 
     // 添加响应和时间回调
-    public static void AddListener(MessageId cmd, View view)
+    public static void AddListener(MessageId cmd, Action<Message> view)
     {
-        router[cmd] = view;
+        router.Add(cmd, view);
     }
 
 
@@ -57,6 +57,11 @@ public class NetManager
     /// <param name="data"></param>
     public async Task Send(MessageId id, object data)
     {
+        if (_socket is null)
+        {
+            return;
+        }
+
         try
         {
             byte[] message = ProtoUtil.Encode(id, data);
@@ -79,7 +84,6 @@ public class NetManager
             // 定义接收缓冲区片段，用于接收新的字节
             ArraySegment<byte> buffer = new(_readBuffer, _bufferCount, BUFFER_SIZE - _bufferCount);
             int count = await _socket.ReceiveAsync(buffer, SocketFlags.None);
-            Debug.Log(count);
             // 记录缓冲区有效字节数
             _bufferCount += Convert.ToInt16(count);
 
@@ -128,11 +132,12 @@ public class NetManager
     public void Serve()
     {
         // Debug.Log(_messageQueue.Count);
-        if (!_socket.Connected) return;
+        if (_socket is null || !_socket.Connected) return;
         if (_messageQueue.Count < 1) return;
         Message message = _messageQueue.Dequeue();
-        Debug.Log(message.messageId);
-        Debug.Log(message.jsonString);
+        // 分配路由
+        Action<Message> view = router[message.messageId];
+        view.Invoke(message);
     }
 
     /// <summary>
@@ -153,11 +158,17 @@ public class Client : MonoBehaviour
         _client = new NetManager();
         await _client.Connect();
         _ = _client.Receive();
+        NetManager.AddListener(MessageId.Login, OnLogin);
     }
 
     private void Update()
     {
-        if (Time.frameCount % 180 == 1)
+        if (_client is null)
+        {
+            return;
+        }
+
+        if (Time.frameCount % 5 == 1)
         {
             LoginReq data = new() {userId = 1, password = "password"};
             _ = _client.Send(MessageId.Login, data);
@@ -165,6 +176,11 @@ public class Client : MonoBehaviour
 
         // 消费消息
         _client.Serve();
+    }
+
+    private void OnLogin(Message message)
+    {
+        Debug.Log(message.jsonString);
     }
 
     private void OnDestroy()
