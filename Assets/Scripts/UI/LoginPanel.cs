@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class LoginPanel : MonoBehaviour
 {
     public static LoginPanel panel;
+
     public InputField inputUsername;
     public InputField inputPassword;
     public Button btnLogin;
@@ -43,6 +44,7 @@ public class LoginPanel : MonoBehaviour
             string password = inputPassword.text;
             Debug.Log(username + " " + password);
             HidePanel();
+            LobbyPanel.ShowPanel();
         });
     }
 }
