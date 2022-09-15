@@ -26,6 +26,14 @@ public class LobbyPanel : MonoBehaviour
     public Button btnCreateRoom;
     public Button btnJoinRoom;
 
+    private void Start()
+    {
+        btnCreateRoom.onClick.AddListener(() =>
+        {
+            CreateRoomPanel.ShowPanel();
+        });
+    }
+
     public static void ShowPanel()
     {
         if (panel is null)

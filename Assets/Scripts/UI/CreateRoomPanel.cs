@@ -5,36 +5,44 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CreateRoom : MonoBehaviour
+public class CreateRoomPanel : MonoBehaviour
 {
+    public static CreateRoomPanel panel;
+
+    public Button btnGeneralMode;
+
+    [Header("通用模式")]
     public ToggleGroup chiToggleGroup;
     public ToggleGroup gameCycleToggleGroup;
-    public Text diamondCostNumber;
-    public Button generalModeCreateBtn;
+    public Text txtDiamondCostNumber;
+    public Button btnGeneralModeCreate;
 
-    private void Awake()
+    public static void ShowPanel()
     {
-        generalModeCreateBtn.onClick.AddListener(CreateGeneralModeRoom);
-        // 给所有圈数开关挂上请求钻石消耗回调。 
-        foreach (Transform toggle in gameCycleToggleGroup.transform)
+        if (panel is null)
         {
-            toggle.GetComponent<Toggle>().onValueChanged.AddListener(OnGameCycleChange);
+            // 获取Prefab
+            GameObject panelPrefab = Resources.Load<GameObject>("UI/CreateRoomPanel");
+            // 实例化panel
+            GameObject loginPanel = Instantiate(panelPrefab);
+            // 挂载到UI canvas
+            loginPanel.transform.SetParent(GameObject.Find("UICanvas").transform, false);
+            // 绑定实例
+            panel = loginPanel.GetComponent<CreateRoomPanel>();
         }
+
+        panel.gameObject.SetActive(true);
+    }
+
+    public static void HidePanel()
+    {
+        if (panel is not null)
+            panel.gameObject.SetActive(false);
     }
 
     private void Start()
     {
-        // 初始化钻石开销
-        UpdateDiamondCostNumber();
-    }
-
-    // 更改游戏圈数后，更新钻石开销
-    public void OnGameCycleChange(bool isOn)
-    {
-        if (isOn)
-        {
-            UpdateDiamondCostNumber();
-        }
+        btnGeneralMode.Select();
     }
 
     // 获取游戏圈数规则
@@ -60,13 +68,5 @@ public class CreateRoom : MonoBehaviour
         // 是否允许吃
         bool hasChi = selectedToggle.name == "CanChiToggle";
         int gameCycleNumber = GetGameCycleNumber();
-        
-    }
-
-    // 更新钻石开销文本
-    public void UpdateDiamondCostNumber()
-    {
-        int gameCycleNumber = GetGameCycleNumber();
-        diamondCostNumber.text = gameCycleNumber.ToString();
     }
 }
