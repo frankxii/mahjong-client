@@ -7,6 +7,6 @@ public class GameManager : MonoBehaviour
 {
     private void Start()
     {
-        LoginPanel.ShowPanel();
+        LoginController.Instance.ShowUI();
     }
 }

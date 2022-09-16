@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2274319266159082667}
   - component: {fileID: 2274319266159082661}
   - component: {fileID: 2274319266159082660}
-  - component: {fileID: 1651126643838827444}
+  - component: {fileID: 5220422060065300541}
   m_Layer: 5
   m_Name: LoginPanel
   m_TagString: Untagged
@@ -81,7 +81,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1651126643838827444
+--- !u!114 &5220422060065300541
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
