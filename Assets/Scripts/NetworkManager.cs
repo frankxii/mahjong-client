@@ -11,23 +11,23 @@ public struct Message
     public string jsonString;
 }
 
-public delegate void View(string str);
 
-public class NetManager
+public class Client
 {
-    private Socket _socket;
+    private TcpClient _client;
+    private NetworkStream _stream;
     private Queue<Message> _messageQueue = new(); // 网络读取写入到消息队列，主线程再进行消费
     public const short BUFFER_SIZE = 1024; // 接收缓冲区大小，1k
     private byte[] _readBuffer = new byte[BUFFER_SIZE]; //接收缓冲区
     private short _bufferCount; //有效字节数
 
-    private static Dictionary<MessageId, Action<Message>> router = new();
+    private static Dictionary<MessageId, Action<Message>> _router = new();
 
 
     // 添加响应和时间回调
     public static void AddListener(MessageId cmd, Action<Message> view)
     {
-        router.Add(cmd, view);
+        _router.Add(cmd, view);
     }
 
 
@@ -40,8 +40,9 @@ public class NetManager
     {
         try
         {
-            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            await _socket.ConnectAsync(host, port);
+            _client = new TcpClient();
+            await _client.ConnectAsync(host, port);
+            _stream = _client.GetStream();
             Debug.Log("服务器连接成功");
         }
         catch (Exception e)
@@ -57,15 +58,13 @@ public class NetManager
     /// <param name="data"></param>
     public async Task Send(MessageId id, object data)
     {
-        if (_socket is null)
-        {
+        if (_client is null || !_client.Connected)
             return;
-        }
 
         try
         {
             byte[] message = ProtoUtil.Encode(id, data);
-            await _socket.SendAsync(message, SocketFlags.None);
+            await _stream.WriteAsync(message);
             Debug.Log("消息发送成功");
         }
         catch (Exception e)
@@ -83,12 +82,12 @@ public class NetManager
         {
             // 定义接收缓冲区片段，用于接收新的字节
             ArraySegment<byte> buffer = new(_readBuffer, _bufferCount, BUFFER_SIZE - _bufferCount);
-            int count = await _socket.ReceiveAsync(buffer, SocketFlags.None);
+            int bytesCount = await _stream.ReadAsync(buffer);
             // 记录缓冲区有效字节数
-            _bufferCount += Convert.ToInt16(count);
+            _bufferCount += Convert.ToInt16(bytesCount);
 
             // count为0表示断开连接
-            if (count == 0)
+            if (bytesCount == 0)
             {
                 Debug.Log("服务端断开连接");
                 break;
@@ -110,55 +109,46 @@ public class NetManager
                 string json = ProtoUtil.DecodeJsonBody(_readBuffer);
                 // 组装消息id和json字符数据，加入消息队列等待消费
                 _messageQueue.Enqueue(new Message() {messageId = id, jsonString = json});
-                // count等于0表示所有数据已处理完
 
-                if (length == _bufferCount)
-                {
-                    _bufferCount = 0;
+                _bufferCount -= length;
+                // count等于0表示所有数据已处理完
+                if (_bufferCount == 0)
                     break;
-                }
                 else
-                {
-                    _bufferCount -= length;
                     // 数组移位
                     Array.Copy(_readBuffer, length, _readBuffer, 0, _bufferCount);
-                }
-
-                await Task.Delay(10);
             }
         }
     }
 
+    // 处理服务端推送消息
     public void Serve()
     {
-        // Debug.Log(_messageQueue.Count);
-        if (_socket is null || !_socket.Connected) return;
         if (_messageQueue.Count < 1) return;
         Message message = _messageQueue.Dequeue();
         // 分配路由
-        Action<Message> view = router[message.messageId];
+        Action<Message> view = _router[message.messageId];
         view.Invoke(message);
     }
 
-    /// <summary>
-    /// 关闭连接
-    /// </summary>
+    // 关闭连接
     public void Close()
     {
-        _socket.Close();
+        _stream.Close();
+        _client.Close();
     }
 }
 
-public class Client : MonoBehaviour
+public class NetworkManager : MonoBehaviour
 {
-    private NetManager _client;
+    private Client _client;
 
     private async void Start()
     {
-        _client = new NetManager();
+        _client = new Client();
         await _client.Connect();
         _ = _client.Receive();
-        NetManager.AddListener(MessageId.Login, OnLogin);
+        Client.AddListener(MessageId.Login, OnLogin);
     }
 
     private void Update()
