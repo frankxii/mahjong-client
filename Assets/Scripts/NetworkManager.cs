@@ -194,6 +194,11 @@ public class NetworkManager : MonoBehaviour
         _client.AddListener(cmd, callback);
     }
 
+    public void Send(MessageId cmd, object req)
+    {
+        _client.Send(cmd, req);
+    }
+
     private void OnDestroy()
     {
         _client.Close();

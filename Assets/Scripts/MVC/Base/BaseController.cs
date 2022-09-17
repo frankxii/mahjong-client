@@ -25,7 +25,7 @@ public abstract class BaseController<TController, TView>
         }
     }
 
-    protected abstract void OnViewMounted(TView view);
+    protected abstract void OnViewMounted();
 
 
     public void ShowUI()
@@ -40,7 +40,7 @@ public abstract class BaseController<TController, TView>
             panel.transform.SetParent(GameObject.Find("UICanvas").transform, false);
             view = panel.GetComponent<TView>();
             hasMounted = true;
-            OnViewMounted(view);
+            OnViewMounted();
         }
 
         view.gameObject.SetActive(true);

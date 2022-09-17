@@ -10,7 +10,7 @@ namespace Protocol
 
     public struct LoginReq
     {
-        public short userId;
+        public string username;
         public string password;
     }
 
