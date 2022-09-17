@@ -36,7 +36,7 @@ public class Client
     /// </summary>
     /// <param name="host">ip地址</param>
     /// <param name="port">端口</param>
-    public async Task Connect(string host = "127.0.0.1", int port = 8000)
+    public async Task ConnectAsync(string host = "127.0.0.1", int port = 8000)
     {
         try
         {
@@ -51,12 +51,7 @@ public class Client
         }
     }
 
-    /// <summary>
-    /// 发送异步消息
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="data"></param>
-    public async Task Send(MessageId id, object data)
+    public void Send(MessageId id, object data)
     {
         if (_client is null || !_client.Connected)
             return;
@@ -64,7 +59,7 @@ public class Client
         try
         {
             byte[] message = ProtoUtil.Encode(id, data);
-            await _stream.WriteAsync(message);
+            _ = _stream.WriteAsync(message);
             Debug.Log("消息发送成功");
         }
         catch (Exception e)
@@ -76,7 +71,7 @@ public class Client
     /// <summary>
     /// 异步线程接收服务端的消息
     /// </summary>
-    public async Task Receive()
+    public async Task ReceiveAsync()
     {
         while (true)
         {
@@ -142,12 +137,24 @@ public class Client
 public class NetworkManager : MonoBehaviour
 {
     private Client _client;
+    public static NetworkManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance is null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(gameObject);
+    }
 
     private async void Start()
     {
         _client = new Client();
-        await _client.Connect();
-        _ = _client.Receive();
+        await _client.ConnectAsync();
+        _ = _client.ReceiveAsync();
         Client.AddListener(MessageId.Login, OnLogin);
     }
 
@@ -161,7 +168,7 @@ public class NetworkManager : MonoBehaviour
         if (Time.frameCount % 5 == 1)
         {
             LoginReq data = new() {userId = 1, password = "password"};
-            _ = _client.Send(MessageId.Login, data);
+            _client.Send(MessageId.Login, data);
         }
 
         // 消费消息
