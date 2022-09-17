@@ -32,7 +32,6 @@ public abstract class BaseController<TController, TView>
     {
         if (!hasMounted)
         {
-            Debug.Log(ViewName);
             GameObject panelPrefab = Resources.Load<GameObject>(ViewName);
             // 实例化panel
             GameObject panel = GameObject.Instantiate(panelPrefab);

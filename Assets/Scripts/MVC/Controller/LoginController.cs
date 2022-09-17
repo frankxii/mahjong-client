@@ -8,8 +8,8 @@ public class LoginController : BaseController<LoginController, LoginView>
 
     protected override void OnViewMounted()
     {
-        NetworkManager.Instance.AddListener(MessageId.Login, OnLogin);
         view.btnLogin.onClick.AddListener(Login);
+        NetworkManager.Instance.AddListener(MessageId.Login, OnLogin);
     }
 
     private void Login()
@@ -22,6 +22,11 @@ public class LoginController : BaseController<LoginController, LoginView>
 
     private void OnLogin(Message message)
     {
-        Debug.Log(message.jsonString);
+        LoginAck ack = JsonUtility.FromJson<LoginAck>(message.jsonString);
+        if (ack.errCode == 0)
+        {
+            UserModel.Instance.UpdateData(ack);
+            LobbyController.Instance.ShowUI();
+        }
     }
 }

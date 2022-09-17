@@ -16,6 +16,10 @@ namespace Protocol
 
     public struct LoginAck
     {
+        public short errCode;
         public string username;
+        public short id;
+        public int coin;
+        public int diamond;
     }
 }

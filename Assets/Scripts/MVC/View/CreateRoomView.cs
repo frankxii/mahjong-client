@@ -5,10 +5,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CreateRoomPanel : MonoBehaviour
+public class CreateRoomView : BaseView
 {
-    public static CreateRoomPanel panel;
-
     public Button btnGeneralMode;
 
     [Header("通用模式")]
@@ -17,28 +15,6 @@ public class CreateRoomPanel : MonoBehaviour
     public Text txtDiamondCostNumber;
     public Button btnGeneralModeCreate;
 
-    public static void ShowPanel()
-    {
-        if (panel is null)
-        {
-            // 获取Prefab
-            GameObject panelPrefab = Resources.Load<GameObject>("UI/CreateRoomPanel");
-            // 实例化panel
-            GameObject loginPanel = Instantiate(panelPrefab);
-            // 挂载到UI canvas
-            loginPanel.transform.SetParent(GameObject.Find("UICanvas").transform, false);
-            // 绑定实例
-            panel = loginPanel.GetComponent<CreateRoomPanel>();
-        }
-
-        panel.gameObject.SetActive(true);
-    }
-
-    public static void HidePanel()
-    {
-        if (panel is not null)
-            panel.gameObject.SetActive(false);
-    }
 
     private void Start()
     {
