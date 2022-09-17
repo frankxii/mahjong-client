@@ -21,13 +21,34 @@ public class Client
     private byte[] _readBuffer = new byte[BUFFER_SIZE]; //接收缓冲区
     private short _bufferCount; //有效字节数
 
-    private static Dictionary<MessageId, Action<Message>> _router = new();
+    private Dictionary<MessageId, Action<Message>> _router = new();
 
 
     // 添加响应和时间回调
-    public static void AddListener(MessageId cmd, Action<Message> view)
+    public void AddListener(MessageId cmd, Action<Message> callback)
     {
-        _router.Add(cmd, view);
+        // 消息ID已绑定过回调
+        if (_router.ContainsKey(cmd))
+        {
+            bool hasBeenRegistered = false;
+            // 遍历委托方法列表，如果回调方法已绑定过，就不绑定
+            foreach (Delegate @delegate in _router[cmd].GetInvocationList())
+            {
+                if (@delegate.Method.Equals(callback.Method))
+                {
+                    hasBeenRegistered = true;
+                    break;
+                }
+            }
+
+            if (!hasBeenRegistered)
+                _router[cmd] += callback;
+        }
+        else
+        {
+            // 消息ID未注册过回调，直接绑定
+            _router.Add(cmd, callback);
+        }
     }
 
 
@@ -122,8 +143,8 @@ public class Client
         if (_messageQueue.Count < 1) return;
         Message message = _messageQueue.Dequeue();
         // 分配路由
-        Action<Message> view = _router[message.messageId];
-        view.Invoke(message);
+        Action<Message> callback = _router[message.messageId];
+        callback(message);
     }
 
     // 关闭连接
@@ -155,7 +176,6 @@ public class NetworkManager : MonoBehaviour
         _client = new Client();
         await _client.ConnectAsync();
         _ = _client.ReceiveAsync();
-        Client.AddListener(MessageId.Login, OnLogin);
     }
 
     private void Update()
@@ -165,23 +185,18 @@ public class NetworkManager : MonoBehaviour
             return;
         }
 
-        if (Time.frameCount % 5 == 1)
-        {
-            LoginReq data = new() {userId = 1, password = "password"};
-            _client.Send(MessageId.Login, data);
-        }
-
         // 消费消息
         _client.Serve();
     }
 
-    private void OnLogin(Message message)
+    public void AddListener(MessageId cmd, Action<Message> callback)
     {
-        Debug.Log(message.jsonString);
+        _client.AddListener(cmd, callback);
     }
 
     private void OnDestroy()
     {
         _client.Close();
+        Instance = null;
     }
 }
