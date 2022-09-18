@@ -1,12 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using MVC.Base;
 using UnityEngine.UI;
 
-public class LoginView : BaseView
+namespace MVC.View
 {
-    public InputField inputUsername;
-    public InputField inputPassword;
-    public Button btnLogin;
+    public class LoginView : BaseView
+    {
+        public InputField inputUsername;
+        public InputField inputPassword;
+        public Button btnLogin;
+    }
 }

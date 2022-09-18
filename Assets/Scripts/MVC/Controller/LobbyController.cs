@@ -1,13 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using MVC.Base;
+using MVC.Model;
+using MVC.View;
 
-public class LobbyController : BaseController<LobbyController, LobbyView>
+namespace MVC.Controller
 {
-    protected override string ViewName => "UI/LobbyPanel";
-
-    protected override void OnViewMounted()
+    public class LobbyController : BaseController<LobbyController, LobbyView>
     {
-        view.UpdateUserProfile(UserModel.Instance);
+        protected override string ViewName => "UI/LobbyPanel";
+
+        protected override void OnViewMounted()
+        {
+            view.UpdateUserProfile(UserModel.Instance);
+        }
     }
 }

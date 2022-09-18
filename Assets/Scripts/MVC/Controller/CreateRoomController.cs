@@ -1,3 +1,6 @@
-public class CreateRoomController
+namespace MVC.Controller
 {
+    public class CreateRoomController
+    {
+    }
 }

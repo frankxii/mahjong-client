@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseView : MonoBehaviour
+namespace MVC.Base
 {
+    public class BaseView : MonoBehaviour
+    {
+    }
 }
