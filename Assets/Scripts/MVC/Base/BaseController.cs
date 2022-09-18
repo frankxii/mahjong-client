@@ -33,10 +33,8 @@ namespace MVC.Base
             if (!hasMounted)
             {
                 GameObject panelPrefab = Resources.Load<GameObject>(ViewName);
-                // 实例化panel
-                GameObject panel = GameObject.Instantiate(panelPrefab);
-                // 挂载到UI canvas
-                panel.transform.SetParent(GameObject.Find("UICanvas").transform, false);
+                // 实例化panel并挂载到UI Canvas
+                GameObject panel = Object.Instantiate(panelPrefab, GameObject.Find("UICanvas").transform);
                 view = panel.GetComponent<TView>();
                 hasMounted = true;
                 OnViewMounted();
@@ -48,6 +46,12 @@ namespace MVC.Base
         public void HideUI()
         {
             view.gameObject.SetActive(false);
+        }
+
+        public void Destroy()
+        {
+            Object.Destroy(view.gameObject);
+            _instance = null;
         }
     }
 }

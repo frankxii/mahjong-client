@@ -51,6 +51,20 @@ public class Client
         }
     }
 
+    /// <summary>
+    /// 移除路由回调
+    /// </summary>
+    /// <param name="cmd">消息ID</param>
+    /// <param name="callback">消息回调方法</param>
+    public void RemoveListener(MessageId cmd, Action<Message> callback)
+    {
+        _router[cmd] -= callback;
+        if (_router[cmd] is null)
+        {
+            _router.Remove(cmd);
+        }
+    }
+
 
     /// <summary>
     /// 连接服务器
@@ -192,6 +206,11 @@ public class NetworkManager : MonoBehaviour
     public void AddListener(MessageId cmd, Action<Message> callback)
     {
         _client.AddListener(cmd, callback);
+    }
+
+    public void RemoveListener(MessageId cmd, Action<Message> callback)
+    {
+        _client.RemoveListener(cmd, callback);
     }
 
     public void Send(MessageId cmd, object req)
