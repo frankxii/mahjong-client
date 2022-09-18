@@ -11,6 +11,7 @@ namespace MVC.Controller
         protected override void OnViewMounted()
         {
             view.UpdateUserProfile(UserModel.Instance);
+            view.btnCreateRoom.onClick.AddListener(() => { CreateRoomController.Instance.ShowUI(); });
         }
     }
 }
