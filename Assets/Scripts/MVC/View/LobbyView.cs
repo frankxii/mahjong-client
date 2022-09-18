@@ -9,6 +9,8 @@ namespace MVC.View
     {
         [Header("顶部")]
         public Image imgAvatar;
+        public Sprite boyAvatar;
+        public Sprite girlAvatar;
         public Text txtCoinNumber;
         public Button btnAddCoin;
         public Text txtDiamondNumber;
@@ -30,6 +32,10 @@ namespace MVC.View
         {
             txtCoinNumber.text = model.Coin.ToString();
             txtDiamondNumber.text = model.Diamond.ToString();
+            if (model.Gender == 1)
+                imgAvatar.sprite = boyAvatar;
+            else
+                imgAvatar.sprite = girlAvatar;
         }
     }
 }

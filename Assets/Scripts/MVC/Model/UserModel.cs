@@ -9,6 +9,7 @@ namespace MVC.Model
         public event Action<UserModel> OnDataUpdate;
         public string Username { get; private set; }
         public short Id { get; private set; }
+        public short Gender { get; private set; }
         public int Coin { get; private set; }
         public int Diamond { get; private set; }
 
@@ -16,6 +17,7 @@ namespace MVC.Model
         {
             Username = ack.username;
             Id = ack.id;
+            Gender = ack.gender;
             Coin = ack.coin;
             Diamond = ack.diamond;
             if (OnDataUpdate is not null)

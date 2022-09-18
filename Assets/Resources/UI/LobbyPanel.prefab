@@ -420,6 +420,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imgAvatar: {fileID: 8187997884648202604}
+  boyAvatar: {fileID: 21300000, guid: e596b816b021c467cab51d8102d47e64, type: 3}
+  girlAvatar: {fileID: 21300000, guid: 2488d61373e5f4eacac86f91ae16089c, type: 3}
   txtCoinNumber: {fileID: 8187997884571521261}
   btnAddCoin: {fileID: 8187997884795847065}
   txtDiamondNumber: {fileID: 8187997885268303587}
