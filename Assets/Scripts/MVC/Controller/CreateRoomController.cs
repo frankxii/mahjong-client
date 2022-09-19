@@ -9,6 +9,14 @@ namespace MVC.Controller
 
         protected override void OnViewMounted()
         {
+            view.btnGeneralModeCreate.onClick.AddListener(() => CreateRoom());
+        }
+
+        private void CreateRoom()
+        {
+            RoomController.Instance.ShowUI();
+            LobbyController.Instance.Destroy();
+            Destroy();
         }
     }
 }
