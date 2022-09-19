@@ -1885,6 +1885,7 @@ GameObject:
   - component: {fileID: 4452813904105385911}
   - component: {fileID: 4452813904105385905}
   - component: {fileID: 4452813904105385904}
+  - component: {fileID: 2794053705998237031}
   m_Layer: 5
   m_Name: JoinRoomPanel
   m_TagString: Untagged
@@ -1954,6 +1955,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2794053705998237031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4452813904105385910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aba85898df747f9bdc82c3e7734216b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  txtInputField1: {fileID: 4452813904498189939}
+  txtInputField2: {fileID: 4452813903224173744}
+  txtInputField3: {fileID: 4452813902865792830}
+  txtInputField4: {fileID: 4452813904666751682}
+  txtInputField5: {fileID: 4452813902996726454}
+  btnNumber1: {fileID: 4452813903817565526}
+  btnNumber2: {fileID: 4452813904515230226}
+  btnNumber3: {fileID: 4452813904539675975}
+  btnNumber4: {fileID: 4452813903936227051}
+  btnNumber5: {fileID: 4452813904614107873}
+  btnNumber6: {fileID: 4452813902898264295}
+  btnNumber7: {fileID: 4452813903043108935}
+  btnNumber8: {fileID: 4452813904422241872}
+  btnNumber9: {fileID: 4452813903583451799}
+  btnNumber0: {fileID: 4452813903696248782}
+  btnClear: {fileID: 4452813903311517803}
+  btnDelete: {fileID: 4452813904262470163}
+  btnJoinRoom: {fileID: 4452813902880306427}
+  btnClose: {fileID: 4452813902663965133}
 --- !u!1 &4452813904262470161
 GameObject:
   m_ObjectHideFlags: 0

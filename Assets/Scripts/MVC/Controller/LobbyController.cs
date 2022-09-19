@@ -12,6 +12,7 @@ namespace MVC.Controller
         {
             view.UpdateUserProfile(UserModel.Instance);
             view.btnCreateRoom.onClick.AddListener(() => { CreateRoomController.Instance.ShowUI(); });
+            view.btnJoinRoom.onClick.AddListener(() => JoinRoomController.Instance.ShowUI());
         }
     }
 }
