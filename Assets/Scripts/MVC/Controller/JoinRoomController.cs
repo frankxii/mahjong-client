@@ -19,7 +19,12 @@ namespace MVC.Controller
             view.btnNumber7.onClick.AddListener(() => view.ClickNumber(7));
             view.btnNumber8.onClick.AddListener(() => view.ClickNumber(8));
             view.btnNumber9.onClick.AddListener(() => view.ClickNumber(9));
+            // 注册删除回调
+            view.btnDelete.onClick.AddListener(() => view.Delete());
+            // 注册清空回调
             view.btnClear.onClick.AddListener(() => view.Clear());
+            // 注册关闭按钮回调
+            view.btnClose.onClick.AddListener(() => Destroy());
         }
     }
 }

@@ -56,6 +56,21 @@ namespace MVC.View
             }
         }
 
+        // 删除数字
+        public void Delete()
+        {
+            Text inputField = GetInputField();
+            if (inputField.text != "")
+            {
+                inputField.text = "";
+            }
+            else
+            {
+                _pointer = Mathf.Max(1, _pointer - 1);
+                GetInputField().text = "";
+            }
+        }
+
         // 清空输入框
         public void Clear()
         {
