@@ -45,6 +45,13 @@ namespace MVC.View
             };
         }
 
+        // 获取输入的房间号
+        public string GetInputFieldString()
+        {
+            return txtInputField1.text + txtInputField2.text + txtInputField3.text + txtInputField4.text +
+                   txtInputField5.text;
+        }
+
         // 响应小键盘数字输入
         public void ClickNumber(short number)
         {

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4652077466423058207}
   - component: {fileID: 4308266879622440426}
   m_Layer: 5
-  m_Name: imgDicePanel
+  m_Name: imgDealerWInd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -491,7 +491,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   txtRoomId: {fileID: 5772343578077038052}
   txtCycle: {fileID: 275224558649669314}
-  imgDicePanel: {fileID: 4308266879622440426}
+  imgDealerWind: {fileID: 4308266879622440426}
+  eastWind: {fileID: 21300000, guid: 2444a119b284442d296f22a1b8037cf7, type: 3}
+  southWind: {fileID: 21300000, guid: 1df8f711a5531464d89feeb5a06d326b, type: 3}
+  westWind: {fileID: 21300000, guid: f5185f8b8221d4a7abad63bde67112e5, type: 3}
+  northWind: {fileID: 21300000, guid: 06730c50597d447e3a5789dd14521908, type: 3}
   imgSelfAvatar: {fileID: 5772343579156518940}
   txtSelfUsername: {fileID: 5772343578296016361}
   txtSelfCoinNumber: {fileID: 5772343577450008154}
@@ -972,7 +976,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 100101
+  m_Text: 10001
 --- !u!1 &5772343578284712346
 GameObject:
   m_ObjectHideFlags: 0

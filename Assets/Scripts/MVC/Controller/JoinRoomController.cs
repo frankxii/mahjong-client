@@ -1,5 +1,6 @@
 using MVC.Base;
 using MVC.View;
+using UnityEngine;
 
 namespace MVC.Controller
 {
@@ -9,6 +10,7 @@ namespace MVC.Controller
 
         protected override void OnViewMounted()
         {
+            // 注册数字键盘回调
             view.btnNumber0.onClick.AddListener(() => view.ClickNumber(0));
             view.btnNumber1.onClick.AddListener(() => view.ClickNumber(1));
             view.btnNumber2.onClick.AddListener(() => view.ClickNumber(2));
@@ -25,6 +27,17 @@ namespace MVC.Controller
             view.btnClear.onClick.AddListener(() => view.Clear());
             // 注册关闭按钮回调
             view.btnClose.onClick.AddListener(() => Destroy());
+            // 注册加入按钮回调
+            view.btnJoinRoom.onClick.AddListener(JoinRoom);
+        }
+
+        private void JoinRoom()
+        {
+            Debug.Log(view.GetInputFieldString());
+        }
+
+        private void OnJoinRoom()
+        {
         }
     }
 }

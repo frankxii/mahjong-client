@@ -1,4 +1,5 @@
 using MVC.Base;
+using MVC.Model;
 using MVC.View;
 
 namespace MVC.Controller
@@ -9,6 +10,8 @@ namespace MVC.Controller
 
         protected override void OnViewMounted()
         {
+            view.UpdateRoomInfo(RoomModel.Instance);
+            view.UpdateSelfInfo(UserModel.Instance);
         }
     }
 }

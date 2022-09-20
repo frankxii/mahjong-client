@@ -1,5 +1,8 @@
 using MVC.Base;
+using MVC.Model;
 using MVC.View;
+using Protocol;
+using UnityEngine;
 
 namespace MVC.Controller
 {
@@ -14,9 +17,22 @@ namespace MVC.Controller
 
         private void CreateRoom()
         {
-            RoomController.Instance.ShowUI();
-            LobbyController.Instance.Destroy();
-            Destroy();
+            CreateRoomReq req = new() {userId = UserModel.Instance.Id, totalCycle = 8};
+            NetworkManager.Instance.AddListener(MessageId.CreateRoom, OnCreateRoom);
+            NetworkManager.Instance.Send(MessageId.CreateRoom, req);
+        }
+
+
+        private void OnCreateRoom(Message message)
+        {
+            CreateRoomAck ack = JsonUtility.FromJson<CreateRoomAck>(message.jsonString);
+            if (ack.errCode == 0)
+            {
+                RoomModel.Instance.UpdateRoomInfo(ack);
+                RoomController.Instance.ShowUI();
+                LobbyController.Instance.Destroy();
+                Destroy();
+            }
         }
     }
 }
