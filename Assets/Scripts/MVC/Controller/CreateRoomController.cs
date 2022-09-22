@@ -1,8 +1,8 @@
 using MVC.Base;
 using MVC.Model;
 using MVC.View;
+using Newtonsoft.Json;
 using Protocol;
-using UnityEngine;
 
 namespace MVC.Controller
 {
@@ -25,7 +25,7 @@ namespace MVC.Controller
 
         private void OnCreateRoom(Message message)
         {
-            CreateRoomAck ack = JsonUtility.FromJson<CreateRoomAck>(message.jsonString);
+            CreateRoomAck ack = JsonConvert.DeserializeObject<CreateRoomAck>(message.jsonString);
             if (ack.errCode == 0)
             {
                 RoomModel.Instance.UpdateRoomInfo(ack);

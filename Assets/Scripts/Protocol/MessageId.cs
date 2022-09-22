@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Protocol
 {
     // 通信协议消息ID
@@ -30,7 +32,13 @@ namespace Protocol
         public short userId;
         public short totalCycle;
     }
-
+    public struct PlayerInfo
+    {
+        public string username;
+        public short id;
+        public short dealerWind;
+        public int coin;
+    }
     public struct CreateRoomAck
     {
         public short errCode;
@@ -38,5 +46,6 @@ namespace Protocol
         public short currentCycle;
         public short totalCycle;
         public byte dealerWind;
+        public List<PlayerInfo> players;
     }
 }

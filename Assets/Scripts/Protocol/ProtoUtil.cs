@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Text;
-using UnityEngine;
+using Newtonsoft.Json;
 
 namespace Protocol
 {
@@ -14,7 +14,8 @@ namespace Protocol
             byte[] messageIdBytes = BitConverter.GetBytes((short) id);
 
             // 结构体转字符串
-            string json = JsonUtility.ToJson(data);
+            string json = JsonConvert.SerializeObject(data);
+
             // 字符串转字节
             byte[] bodyBytes = Encoding.UTF8.GetBytes(json);
             // 获取发送消息字节长度

@@ -1,8 +1,8 @@
 using MVC.Base;
 using MVC.Model;
 using MVC.View;
+using Newtonsoft.Json;
 using Protocol;
-using UnityEngine;
 
 namespace MVC.Controller
 {
@@ -26,7 +26,7 @@ namespace MVC.Controller
 
         private void OnLogin(Message message)
         {
-            LoginAck ack = JsonUtility.FromJson<LoginAck>(message.jsonString);
+            LoginAck ack = JsonConvert.DeserializeObject<LoginAck>(message.jsonString);
             // 登录成功，更新用户数据，打开大厅，销毁登录页面，移除登录回调
             if (ack.errCode == 0)
             {
