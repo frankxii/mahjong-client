@@ -25,10 +25,11 @@ namespace MVC.Controller
 
         private void OnCreateRoom(Message message)
         {
-            CreateRoomAck ack = JsonConvert.DeserializeObject<CreateRoomAck>(message.jsonString);
-            if (ack.errCode == 0)
+            Response<CreateRoomAck> response;
+            response = JsonConvert.DeserializeObject<Response<CreateRoomAck>>(message.jsonString);
+            if (response?.code == 0)
             {
-                RoomModel.Instance.UpdateRoomInfo(ack);
+                RoomModel.Instance.UpdateRoomInfo(response.data);
                 RoomController.Instance.ShowUI();
                 LobbyController.Instance.Destroy();
                 Destroy();

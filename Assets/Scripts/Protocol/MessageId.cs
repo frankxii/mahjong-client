@@ -11,15 +11,21 @@ namespace Protocol
     }
 
 
-    public struct LoginReq
+    public class LoginReq
     {
         public string username;
         public string password;
     }
-
-    public struct LoginAck
+    
+    public class Response<T>
     {
-        public short errCode;
+        public short code = 0;
+        public string message = "OK";
+        public T data;
+    }
+
+    public class LoginAck
+    {
         public string username;
         public short id;
         public short gender;
@@ -27,21 +33,22 @@ namespace Protocol
         public int diamond;
     }
 
-    public struct CreateRoomReq
+    public class CreateRoomReq
     {
         public short userId;
         public short totalCycle;
     }
-    public struct PlayerInfo
+
+    public class PlayerInfo
     {
         public string username;
         public short id;
         public short dealerWind;
         public int coin;
     }
-    public struct CreateRoomAck
+
+    public class CreateRoomAck
     {
-        public short errCode;
         public short roomId;
         public short currentCycle;
         public short totalCycle;

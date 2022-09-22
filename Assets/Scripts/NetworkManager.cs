@@ -95,7 +95,7 @@ public class Client
         {
             byte[] message = ProtoUtil.Encode(id, data);
             _ = _stream.WriteAsync(message);
-            Debug.Log("消息发送成功");
+            // Debug.Log("消息发送成功");
         }
         catch (Exception e)
         {
