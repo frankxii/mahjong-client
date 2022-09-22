@@ -1,5 +1,5 @@
+using Data;
 using MVC.Base;
-using Protocol;
 
 namespace MVC.Model
 {
@@ -11,12 +11,19 @@ namespace MVC.Model
         public byte DealerWind { get; private set; } // 门风
 
 
-        public void UpdateRoomInfo(CreateRoomAck ack)
+        public void UpdateRoomInfo(RoomInfo info, UserModel user)
         {
-            RoomID = ack.roomId;
-            CurrentCycle = ack.currentCycle;
-            TotalCycle = ack.totalCycle;
-            DealerWind = ack.dealerWind;
+            RoomID = info.roomId;
+            CurrentCycle = info.currentCycle;
+            TotalCycle = info.totalCycle;
+            foreach (PlayerInfo player in info.players)
+            {
+                if (player.id == user.Id)
+                {
+                    DealerWind = player.dealerWind;
+                    break;
+                }
+            }
         }
     }
 }

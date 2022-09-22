@@ -1,6 +1,6 @@
 using System;
+using Data;
 using MVC.Base;
-using Protocol;
 
 namespace MVC.Model
 {
@@ -13,13 +13,13 @@ namespace MVC.Model
         public int Coin { get; private set; }
         public int Diamond { get; private set; }
 
-        public void UpdateData(LoginAck ack)
+        public void UpdateData(UserInfo info)
         {
-            Username = ack.username;
-            Id = ack.id;
-            Gender = ack.gender;
-            Coin = ack.coin;
-            Diamond = ack.diamond;
+            Username = info.username;
+            Id = info.id;
+            Gender = info.gender;
+            Coin = info.coin;
+            Diamond = info.diamond;
             if (OnDataUpdate is not null)
                 OnDataUpdate(this);
         }

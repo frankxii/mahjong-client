@@ -1,3 +1,4 @@
+using Data;
 using MVC.Base;
 using MVC.Model;
 using MVC.View;
@@ -25,8 +26,7 @@ namespace MVC.Controller
 
         private void OnLogin(string json)
         {
-            Response<LoginAck> response;
-            response = ProtoUtil.Deserialize<Response<LoginAck>>(json);
+            Response<UserInfo> response = ProtoUtil.Deserialize<Response<UserInfo>>(json);
             // 登录成功，更新用户数据，打开大厅，销毁登录页面，移除登录回调
             if (response.code == 0)
             {
