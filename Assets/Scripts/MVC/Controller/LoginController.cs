@@ -24,10 +24,10 @@ namespace MVC.Controller
             NetworkManager.Instance.Send(MessageId.Login, req);
         }
 
-        private void OnLogin(Message message)
+        private void OnLogin(string json)
         {
             Response<LoginAck> response;
-            response = JsonConvert.DeserializeObject<Response<LoginAck>>(message.jsonString);
+            response = JsonConvert.DeserializeObject<Response<LoginAck>>(json);
             // 登录成功，更新用户数据，打开大厅，销毁登录页面，移除登录回调
             if (response?.code == 0)
             {

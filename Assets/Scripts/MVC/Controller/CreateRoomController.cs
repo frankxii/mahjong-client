@@ -23,10 +23,10 @@ namespace MVC.Controller
         }
 
 
-        private void OnCreateRoom(Message message)
+        private void OnCreateRoom(string json)
         {
             Response<CreateRoomAck> response;
-            response = JsonConvert.DeserializeObject<Response<CreateRoomAck>>(message.jsonString);
+            response = JsonConvert.DeserializeObject<Response<CreateRoomAck>>(json);
             if (response?.code == 0)
             {
                 RoomModel.Instance.UpdateRoomInfo(response.data);

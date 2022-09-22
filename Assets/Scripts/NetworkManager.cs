@@ -8,7 +8,7 @@ using UnityEngine;
 public struct Message
 {
     public MessageId messageId;
-    public string jsonString;
+    public string json;
 }
 
 
@@ -21,11 +21,11 @@ public class Client
     private byte[] _readBuffer = new byte[BUFFER_SIZE]; //接收缓冲区
     private short _bufferCount; //有效字节数
 
-    private Dictionary<MessageId, Action<Message>> _router = new();
+    private Dictionary<MessageId, Action<string>> _router = new();
 
 
     // 添加响应和时间回调
-    public void AddListener(MessageId cmd, Action<Message> callback)
+    public void AddListener(MessageId cmd, Action<string> callback)
     {
         // 消息ID已绑定过回调
         if (_router.ContainsKey(cmd))
@@ -56,7 +56,7 @@ public class Client
     /// </summary>
     /// <param name="cmd">消息ID</param>
     /// <param name="callback">消息回调方法</param>
-    public void RemoveListener(MessageId cmd, Action<Message> callback)
+    public void RemoveListener(MessageId cmd, Action<string> callback)
     {
         _router[cmd] -= callback;
         if (_router[cmd] is null)
@@ -138,7 +138,7 @@ public class Client
 
                 string json = ProtoUtil.DecodeJsonBody(_readBuffer);
                 // 组装消息id和json字符数据，加入消息队列等待消费
-                _messageQueue.Enqueue(new Message() {messageId = id, jsonString = json});
+                _messageQueue.Enqueue(new Message() {messageId = id, json = json});
 
                 _bufferCount -= length;
                 // count等于0表示所有数据已处理完
@@ -157,8 +157,7 @@ public class Client
         if (_messageQueue.Count < 1) return;
         Message message = _messageQueue.Dequeue();
         // 分配路由
-        Action<Message> callback = _router[message.messageId];
-        callback(message);
+        _router[message.messageId](message.json);
     }
 
     // 关闭连接
@@ -203,12 +202,12 @@ public class NetworkManager : MonoBehaviour
         _client.Serve();
     }
 
-    public void AddListener(MessageId cmd, Action<Message> callback)
+    public void AddListener(MessageId cmd, Action<string> callback)
     {
         _client.AddListener(cmd, callback);
     }
 
-    public void RemoveListener(MessageId cmd, Action<Message> callback)
+    public void RemoveListener(MessageId cmd, Action<string> callback)
     {
         _client.RemoveListener(cmd, callback);
     }
