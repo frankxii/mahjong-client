@@ -1,7 +1,6 @@
 using MVC.Base;
 using MVC.Model;
 using MVC.View;
-using Newtonsoft.Json;
 using Protocol;
 
 namespace MVC.Controller
@@ -27,9 +26,9 @@ namespace MVC.Controller
         private void OnLogin(string json)
         {
             Response<LoginAck> response;
-            response = JsonConvert.DeserializeObject<Response<LoginAck>>(json);
+            response = ProtoUtil.Deserialize<Response<LoginAck>>(json);
             // 登录成功，更新用户数据，打开大厅，销毁登录页面，移除登录回调
-            if (response?.code == 0)
+            if (response.code == 0)
             {
                 UserModel.Instance.UpdateData(response.data);
                 LobbyController.Instance.ShowUI();

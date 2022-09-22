@@ -1,7 +1,6 @@
 using MVC.Base;
 using MVC.Model;
 using MVC.View;
-using Newtonsoft.Json;
 using Protocol;
 
 namespace MVC.Controller
@@ -25,9 +24,8 @@ namespace MVC.Controller
 
         private void OnCreateRoom(string json)
         {
-            Response<CreateRoomAck> response;
-            response = JsonConvert.DeserializeObject<Response<CreateRoomAck>>(json);
-            if (response?.code == 0)
+            Response<CreateRoomAck> response = ProtoUtil.Deserialize<Response<CreateRoomAck>>(json);
+            if (response.code == 0)
             {
                 RoomModel.Instance.UpdateRoomInfo(response.data);
                 RoomController.Instance.ShowUI();

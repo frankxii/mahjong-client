@@ -60,5 +60,16 @@ namespace Protocol
             string json = Encoding.UTF8.GetString(jsonByte);
             return json;
         }
+
+        public static T Deserialize<T>(string json)
+        {
+            T data= JsonConvert.DeserializeObject<T>(json);
+            if (data is null)
+            {
+                throw new Exception("反序列化失败");
+            }
+
+            return data;
+        }
     }
 }
