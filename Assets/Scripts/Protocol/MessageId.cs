@@ -23,7 +23,7 @@ namespace Protocol
 
     public class CreateRoomReq
     {
-        public short userId;
+        public int userId;
         public short totalCycle;
     }
 }

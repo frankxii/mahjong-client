@@ -18,7 +18,7 @@ namespace MVC.Model
             TotalCycle = info.totalCycle;
             foreach (PlayerInfo player in info.players)
             {
-                if (player.id == user.Id)
+                if (player.userId == user.UserId)
                 {
                     DealerWind = player.dealerWind;
                     break;

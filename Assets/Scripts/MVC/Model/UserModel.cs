@@ -8,15 +8,15 @@ namespace MVC.Model
     {
         public event Action<UserModel> OnDataUpdate;
         public string Username { get; private set; }
-        public short Id { get; private set; }
-        public short Gender { get; private set; }
+        public int UserId { get; private set; }
+        public byte Gender { get; private set; }
         public int Coin { get; private set; }
         public int Diamond { get; private set; }
 
         public void UpdateData(UserInfo info)
         {
             Username = info.username;
-            Id = info.id;
+            UserId = info.userId;
             Gender = info.gender;
             Coin = info.coin;
             Diamond = info.diamond;

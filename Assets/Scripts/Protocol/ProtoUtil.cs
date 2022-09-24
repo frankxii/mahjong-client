@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -70,6 +71,20 @@ namespace Protocol
             }
 
             return data;
+        }
+        
+        public static string Md5Encrypt(string content)
+        {
+            MD5 md5 = MD5.Create();
+            byte[] byteContent = Encoding.UTF8.GetBytes(content);
+            byte[] hashCode = md5.ComputeHash(byteContent);
+            StringBuilder sb = new();
+            foreach (byte b in hashCode)
+            {
+                sb.Append(b.ToString("x2"));
+            }
+
+            return sb.ToString();
         }
     }
 }
