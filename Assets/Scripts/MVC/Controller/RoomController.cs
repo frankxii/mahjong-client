@@ -11,7 +11,7 @@ namespace MVC.Controller
         protected override void OnViewMounted()
         {
             view.UpdateRoomInfo(RoomModel.Instance);
-            view.UpdateSelfInfo(UserModel.Instance);
+            view.UpdatePlayerInfo(RoomModel.Instance.DealerWind, RoomModel.Instance.Players);
         }
     }
 }

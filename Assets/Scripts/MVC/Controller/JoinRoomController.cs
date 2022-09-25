@@ -1,3 +1,4 @@
+using Data;
 using MVC.Base;
 using MVC.Model;
 using MVC.View;
@@ -43,6 +44,14 @@ namespace MVC.Controller
 
         private void OnJoinRoom(string json)
         {
+            Response<RoomInfo> response = ProtoUtil.Deserialize<Response<RoomInfo>>(json);
+            if (response.code == 0)
+            {
+                RoomModel.Instance.UpdateRoomInfo(response.data, UserModel.Instance);
+                RoomController.Instance.ShowUI();
+                LobbyController.Instance.Destroy();
+                Destroy();
+            }
         }
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Data;
 using MVC.Base;
 using MVC.Model;
 using UnityEngine;
@@ -31,24 +33,56 @@ namespace MVC.View
         public Text txtRightUsername;
         public Text txtRightCoinNumber;
 
+        /// <summary>
+        /// 更新房间基础信息
+        /// </summary>
+        /// <param name="model"></param>
         public void UpdateRoomInfo(RoomModel model)
         {
             txtRoomId.text = model.RoomID.ToString();
             txtCycle.text = model.CurrentCycle.ToString() + "/" + model.TotalCycle.ToString();
+        }
+
+        /// <summary>
+        /// 更新玩家座位与昵称、金币等信息
+        /// </summary>
+        /// <param name="dealerWind"></param>
+        /// <param name="players"></param>
+        public void UpdatePlayerInfo(byte dealerWind, List<PlayerInfo> players)
+        {
             // 设置门风
-            imgDealerWind.sprite = model.DealerWind switch
+            imgDealerWind.sprite = dealerWind switch
             {
                 1 => eastWind,
                 2 => southWind,
                 3 => westWind,
                 _ => northWind
             };
-        }
-
-        public void UpdateSelfInfo(UserModel model)
-        {
-            txtSelfUsername.text = model.Username;
-            txtSelfCoinNumber.text = model.Coin.ToString();
+            foreach (PlayerInfo player in players)
+            {
+                // 东南西北门风的值为1234，通过玩家门风与本家的差值，来判断每个玩家所在的位置
+                int value = player.dealerWind - dealerWind;
+                if (value == 0)
+                {
+                    txtSelfUsername.text = player.username;
+                    txtSelfCoinNumber.text = player.coin.ToString();
+                }
+                else if (value == 2 || value == -2)
+                {
+                    txtOppositeUsername.text = player.username;
+                    txtOppositeCoinNumber.text = player.coin.ToString();
+                }
+                else if (value == 1 || value == -3)
+                {
+                    txtRightUsername.text = player.username;
+                    txtRightCoinNumber.text = player.coin.ToString();
+                }
+                else if (value == -1 || value == 3)
+                {
+                    txtLeftUsername.text = player.username;
+                    txtLeftCoinNumber.text = player.coin.ToString();
+                }
+            }
         }
     }
 }
