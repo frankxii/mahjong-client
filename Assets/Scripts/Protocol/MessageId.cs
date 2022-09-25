@@ -5,7 +5,8 @@ namespace Protocol
     {
         Login = 1000, // 登录
         CreateRoom = 1001, // 创建房间
-        JoinRoom = 1002 // 加入房间
+        JoinRoom = 1002, // 加入房间
+        UpdatePlayer = 1003 // 更新房间玩家信息
     }
 
     public class Response<T>
@@ -25,5 +26,11 @@ namespace Protocol
     {
         public int userId;
         public short totalCycle;
+    }
+
+    public class JoinRoomReq
+    {
+        public int userId;
+        public int roomId;
     }
 }

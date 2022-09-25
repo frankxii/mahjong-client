@@ -1,6 +1,7 @@
 using MVC.Base;
+using MVC.Model;
 using MVC.View;
-using UnityEngine;
+using Protocol;
 
 namespace MVC.Controller
 {
@@ -33,10 +34,14 @@ namespace MVC.Controller
 
         private void JoinRoom()
         {
-            Debug.Log(view.GetInputFieldString());
+            string roomNo = view.GetInputFieldString();
+            int roomId = int.Parse(roomNo);
+            JoinRoomReq req = new() {userId = UserModel.Instance.UserId, roomId = roomId};
+            NetworkManager.Instance.AddListener(MessageId.JoinRoom, OnJoinRoom);
+            NetworkManager.Instance.Send(MessageId.JoinRoom, req);
         }
 
-        private void OnJoinRoom()
+        private void OnJoinRoom(string json)
         {
         }
     }

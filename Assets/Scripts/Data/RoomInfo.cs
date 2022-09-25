@@ -4,7 +4,7 @@ namespace Data
 {
     public class RoomInfo
     {
-        public short roomId;
+        public int roomId;
         public short currentCycle;
         public short totalCycle;
         public List<PlayerInfo> players;

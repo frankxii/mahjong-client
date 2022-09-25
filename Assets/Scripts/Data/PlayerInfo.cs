@@ -5,7 +5,7 @@ namespace Data
     public class PlayerInfo : UserInfo
     {
         [Obsolete]
-        public new short diamond;
+        public new int diamond;
 
         public byte dealerWind; // 门风
     }
