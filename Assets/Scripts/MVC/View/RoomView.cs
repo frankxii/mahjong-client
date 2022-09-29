@@ -12,23 +12,33 @@ namespace MVC.View
         public Text txtRoomId; // 房间ID
         public Text txtCycle; // 当前圈数
         public Image imgDealerWind; // 中控
+
+        [Header("东南西北图片")]
         public Sprite eastWind;
         public Sprite southWind;
         public Sprite westWind;
         public Sprite northWind;
 
+        [Header("男女头像图片")]
+        public Sprite boyAvatar;
+        public Sprite girlAvatar;
+
+        [Header("本家")]
         public Image imgSelfAvatar;
         public Text txtSelfUsername;
         public Text txtSelfCoinNumber;
 
+        [Header("对家")]
         public Image imgOppositeAvatar;
         public Text txtOppositeUsername;
         public Text txtOppositeCoinNumber;
 
+        [Header("上家")]
         public Image imgLeftAvatar;
         public Text txtLeftUsername;
         public Text txtLeftCoinNumber;
 
+        [Header("下家")]
         public Image imgRightAvatar;
         public Text txtRightUsername;
         public Text txtRightCoinNumber;
@@ -66,21 +76,25 @@ namespace MVC.View
                 {
                     txtSelfUsername.text = player.username;
                     txtSelfCoinNumber.text = player.coin.ToString();
+                    imgSelfAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
                 }
                 else if (value == 2 || value == -2)
                 {
                     txtOppositeUsername.text = player.username;
                     txtOppositeCoinNumber.text = player.coin.ToString();
+                    imgSelfAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
                 }
                 else if (value == 1 || value == -3)
                 {
                     txtRightUsername.text = player.username;
                     txtRightCoinNumber.text = player.coin.ToString();
+                    imgSelfAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
                 }
                 else if (value == -1 || value == 3)
                 {
                     txtLeftUsername.text = player.username;
                     txtLeftCoinNumber.text = player.coin.ToString();
+                    imgSelfAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
                 }
             }
         }

@@ -496,6 +496,8 @@ MonoBehaviour:
   southWind: {fileID: 21300000, guid: 1df8f711a5531464d89feeb5a06d326b, type: 3}
   westWind: {fileID: 21300000, guid: f5185f8b8221d4a7abad63bde67112e5, type: 3}
   northWind: {fileID: 21300000, guid: 06730c50597d447e3a5789dd14521908, type: 3}
+  boyAvatar: {fileID: 21300000, guid: e596b816b021c467cab51d8102d47e64, type: 3}
+  girlAvatar: {fileID: 21300000, guid: 2488d61373e5f4eacac86f91ae16089c, type: 3}
   imgSelfAvatar: {fileID: 5772343579156518940}
   txtSelfUsername: {fileID: 5772343578296016361}
   txtSelfCoinNumber: {fileID: 5772343577450008154}
