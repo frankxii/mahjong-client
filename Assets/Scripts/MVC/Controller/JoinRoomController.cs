@@ -50,6 +50,7 @@ namespace MVC.Controller
                 RoomModel.Instance.UpdateRoomInfo(response.data, UserModel.Instance);
                 RoomController.Instance.ShowUI();
                 LobbyController.Instance.Destroy();
+                NetworkManager.Instance.RemoveListener(MessageId.JoinRoom, OnJoinRoom);
                 Destroy();
             }
         }

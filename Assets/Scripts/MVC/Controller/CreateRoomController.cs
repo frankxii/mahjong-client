@@ -31,6 +31,8 @@ namespace MVC.Controller
                 RoomModel.Instance.UpdateRoomInfo(response.data, UserModel.Instance);
                 RoomController.Instance.ShowUI();
                 LobbyController.Instance.Destroy();
+                // 销毁UI和controller时需要注销回调事件，不然会导致引用错误
+                NetworkManager.Instance.RemoveListener(MessageId.CreateRoom, OnCreateRoom);
                 Destroy();
             }
         }

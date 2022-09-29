@@ -6,7 +6,7 @@ namespace MVC.Model
 {
     public class RoomModel : BaseModel<RoomModel>
     {
-        public int RoomID { get; private set; } // 房间ID
+        public int RoomId { get; private set; } // 房间ID
         public short CurrentCycle { get; private set; } // 当前圈数
         public short TotalCycle { get; private set; } // 总圈数
         public byte DealerWind { get; private set; } // 门风
@@ -15,7 +15,7 @@ namespace MVC.Model
 
         public void UpdateRoomInfo(RoomInfo info, UserModel user)
         {
-            RoomID = info.roomId;
+            RoomId = info.roomId;
             CurrentCycle = info.currentCycle;
             TotalCycle = info.totalCycle;
             Players = info.players;
@@ -28,6 +28,11 @@ namespace MVC.Model
                     break;
                 }
             }
+        }
+
+        public void UpdatePlayers(in List<PlayerInfo> players)
+        {
+            Players = players;
         }
     }
 }

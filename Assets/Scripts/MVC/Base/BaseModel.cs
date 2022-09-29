@@ -22,7 +22,7 @@ namespace MVC.Base
                 return _instance;
             }
 
-            private set => _instance = value;
+            set => _instance = value;
         }
     }
 }

@@ -13,6 +13,8 @@ namespace MVC.View
         public Text txtCycle; // 当前圈数
         public Image imgDealerWind; // 中控
 
+        public Button btnLeaveRoom; // 离开房间按钮
+
         [Header("东南西北图片")]
         public Sprite eastWind;
         public Sprite southWind;
@@ -22,6 +24,7 @@ namespace MVC.View
         [Header("男女头像图片")]
         public Sprite boyAvatar;
         public Sprite girlAvatar;
+        public Sprite defaultAvatar;
 
         [Header("本家")]
         public Image imgSelfAvatar;
@@ -49,8 +52,23 @@ namespace MVC.View
         /// <param name="model"></param>
         public void UpdateRoomInfo(RoomModel model)
         {
-            txtRoomId.text = model.RoomID.ToString();
+            txtRoomId.text = model.RoomId.ToString();
             txtCycle.text = model.CurrentCycle.ToString() + "/" + model.TotalCycle.ToString();
+        }
+
+        private void ResetPlayersInfo()
+        {
+            txtOppositeUsername.text = "";
+            txtOppositeCoinNumber.text = "";
+            imgOppositeAvatar.sprite = defaultAvatar;
+
+            txtLeftUsername.text = "";
+            txtLeftCoinNumber.text = "";
+            imgLeftAvatar.sprite = defaultAvatar;
+
+            txtRightUsername.text = "";
+            txtRightCoinNumber.text = "";
+            imgRightAvatar.sprite = defaultAvatar;
         }
 
         /// <summary>
@@ -60,6 +78,9 @@ namespace MVC.View
         /// <param name="players"></param>
         public void UpdatePlayerInfo(byte dealerWind, List<PlayerInfo> players)
         {
+            // 重置玩家信息，方便更新玩家信息时清除已离开玩家的信息
+            ResetPlayersInfo();
+
             // 设置门风
             imgDealerWind.sprite = dealerWind switch
             {
@@ -82,19 +103,19 @@ namespace MVC.View
                 {
                     txtOppositeUsername.text = player.username;
                     txtOppositeCoinNumber.text = player.coin.ToString();
-                    imgSelfAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
+                    imgOppositeAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
                 }
                 else if (value == 1 || value == -3)
                 {
                     txtRightUsername.text = player.username;
                     txtRightCoinNumber.text = player.coin.ToString();
-                    imgSelfAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
+                    imgRightAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
                 }
                 else if (value == -1 || value == 3)
                 {
                     txtLeftUsername.text = player.username;
                     txtLeftCoinNumber.text = player.coin.ToString();
-                    imgSelfAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
+                    imgLeftAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
                 }
             }
         }
