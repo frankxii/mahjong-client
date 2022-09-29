@@ -17,7 +17,7 @@ namespace MVC.Controller
 
         private void CreateRoom()
         {
-            CreateRoomReq req = new() {userId = UserModel.Instance.UserId, totalCycle = 8};
+            CreateRoomReq req = new() {userId = UserModel.Instance.UserId, totalCycle = view.GetGameCycleNumber()};
             NetworkManager.Instance.AddListener(MessageId.CreateRoom, OnCreateRoom);
             NetworkManager.Instance.Send(MessageId.CreateRoom, req);
         }

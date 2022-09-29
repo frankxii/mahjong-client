@@ -22,12 +22,12 @@ namespace MVC.View
         }
 
         // 获取游戏圈数规则
-        private int GetGameCycleNumber()
+        public short GetGameCycleNumber()
         {
             Toggle selectedToggle;
             // 获取游戏圈数
             selectedToggle = gameCycleToggleGroup.ActiveToggles().ToList()[0];
-            int gameCycle = 4;
+            short gameCycle = 4;
             if (selectedToggle.name == "SixteenCycleToggle")
                 gameCycle = 16;
             else if (selectedToggle.name == "EightCycleToggle")
