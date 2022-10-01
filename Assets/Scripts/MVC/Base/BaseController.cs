@@ -48,7 +48,7 @@ namespace MVC.Base
             view.gameObject.SetActive(false);
         }
 
-        public void Destroy()
+        public virtual void Destroy()
         {
             Object.Destroy(view.gameObject);
             _instance = null;

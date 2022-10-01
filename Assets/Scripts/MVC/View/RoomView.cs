@@ -26,6 +26,13 @@ namespace MVC.View
         public Sprite girlAvatar;
         public Sprite defaultAvatar;
 
+        [Header("玩家准备")]
+        public Button btnReady;
+        public Image imgSelfReady;
+        public Image imgOppositeReady;
+        public Image imgLeftReady;
+        public Image imgRightReady;
+
         [Header("本家")]
         public Image imgSelfAvatar;
         public Text txtSelfUsername;
@@ -71,6 +78,13 @@ namespace MVC.View
             imgRightAvatar.sprite = defaultAvatar;
         }
 
+        // 准备按钮回调
+        public void Ready()
+        {
+            imgSelfReady.enabled = true;
+            btnReady.enabled = false;
+        }
+
         /// <summary>
         /// 更新玩家座位与昵称、金币等信息
         /// </summary>
@@ -98,24 +112,28 @@ namespace MVC.View
                     txtSelfUsername.text = player.username;
                     txtSelfCoinNumber.text = player.coin.ToString();
                     imgSelfAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
+                    imgSelfReady.enabled = player.isReady;
                 }
                 else if (value == 2 || value == -2)
                 {
                     txtOppositeUsername.text = player.username;
                     txtOppositeCoinNumber.text = player.coin.ToString();
                     imgOppositeAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
+                    imgOppositeReady.enabled = player.isReady;
                 }
                 else if (value == 1 || value == -3)
                 {
                     txtRightUsername.text = player.username;
                     txtRightCoinNumber.text = player.coin.ToString();
                     imgRightAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
+                    imgRightReady.enabled = player.isReady;
                 }
                 else if (value == -1 || value == 3)
                 {
                     txtLeftUsername.text = player.username;
                     txtLeftCoinNumber.text = player.coin.ToString();
                     imgLeftAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
+                    imgLeftReady.enabled = player.isReady;
                 }
             }
         }

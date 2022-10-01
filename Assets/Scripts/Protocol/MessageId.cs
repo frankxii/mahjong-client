@@ -7,7 +7,8 @@ namespace Protocol
         CreateRoom = 1001, // 创建房间
         JoinRoom = 1002, // 加入房间
         UpdatePlayer = 1003, // 更新房间玩家信息
-        LeaveRoom = 1004 // 玩家离开房间
+        LeaveRoom = 1004, // 玩家离开房间
+        Ready = 1005 // 玩家准备
     }
 
     public class Response<T>
@@ -36,6 +37,12 @@ namespace Protocol
     }
 
     public class LeaveRoomReq
+    {
+        public int userId;
+        public int roomId;
+    }
+
+    public class ReadyReq
     {
         public int userId;
         public int roomId;

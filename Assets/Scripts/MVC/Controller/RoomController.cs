@@ -19,6 +19,19 @@ namespace MVC.Controller
 
             // 绑定离开房间事件
             view.btnLeaveRoom.onClick.AddListener(LeaveRoom);
+            // 绑定准备事件
+            view.btnReady.onClick.AddListener(Ready);
+        }
+
+        public override void Destroy()
+        {
+            // 注销回调事件
+            NetworkManager.Instance.RemoveListener(MessageId.UpdatePlayer, OnUpdatePlayer);
+            NetworkManager.Instance.RemoveListener(MessageId.LeaveRoom, OnLeaveRoom);
+            NetworkManager.Instance.RemoveListener(MessageId.Ready, OnReady);
+            // 清空房间信息
+            RoomModel.Instance = null;
+            base.Destroy();
         }
 
         // 房间玩家信息同步回调
@@ -43,15 +56,26 @@ namespace MVC.Controller
             Response<object> resp = ProtoUtil.Deserialize<Response<object>>(json);
             if (resp.code == 0)
             {
-                // 注销回调事件
-                NetworkManager.Instance.RemoveListener(MessageId.UpdatePlayer, OnUpdatePlayer);
-                NetworkManager.Instance.RemoveListener(MessageId.LeaveRoom, OnLeaveRoom);
-                // 清空房间信息
-                RoomModel.Instance = null;
                 // 加载大厅
                 LobbyController.Instance.ShowUI();
-                // 关闭房间view
                 Destroy();
+            }
+        }
+
+        // 发起准备请求
+        private void Ready()
+        {
+            ReadyReq req = new() {userId = UserModel.Instance.UserId, roomId = RoomModel.Instance.RoomId};
+            NetworkManager.Instance.Send(MessageId.Ready, req);
+        }
+
+        // 准备服务器回调
+        private void OnReady(string json)
+        {
+            Response<object> resp = ProtoUtil.Deserialize<Response<object>>(json);
+            if (resp.code == 0)
+            {
+                view.Ready();
             }
         }
     }
