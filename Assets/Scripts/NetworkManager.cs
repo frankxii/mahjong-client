@@ -58,10 +58,13 @@ public class Client
     /// <param name="callback">消息回调方法</param>
     public void RemoveListener(MessageId cmd, Action<string> callback)
     {
-        _router[cmd] -= callback;
-        if (_router[cmd] is null)
+        if (_router.ContainsKey(cmd))
         {
-            _router.Remove(cmd);
+            _router[cmd] -= callback;
+            if (_router[cmd] is null)
+            {
+                _router.Remove(cmd);
+            }
         }
     }
 

@@ -68,21 +68,24 @@ namespace MVC.View
             txtOppositeUsername.text = "";
             txtOppositeCoinNumber.text = "";
             imgOppositeAvatar.sprite = defaultAvatar;
+            imgOppositeReady.gameObject.SetActive(false);
 
             txtLeftUsername.text = "";
             txtLeftCoinNumber.text = "";
             imgLeftAvatar.sprite = defaultAvatar;
+            imgLeftReady.gameObject.SetActive(false);
 
             txtRightUsername.text = "";
             txtRightCoinNumber.text = "";
             imgRightAvatar.sprite = defaultAvatar;
+            imgRightReady.gameObject.SetActive(false);
         }
 
         // 准备按钮回调
         public void Ready()
         {
-            imgSelfReady.enabled = true;
-            btnReady.enabled = false;
+            imgSelfReady.gameObject.SetActive(true);
+            btnReady.gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -112,28 +115,28 @@ namespace MVC.View
                     txtSelfUsername.text = player.username;
                     txtSelfCoinNumber.text = player.coin.ToString();
                     imgSelfAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
-                    imgSelfReady.enabled = player.isReady;
+                    imgSelfReady.gameObject.SetActive(player.isReady);
                 }
                 else if (value == 2 || value == -2)
                 {
                     txtOppositeUsername.text = player.username;
                     txtOppositeCoinNumber.text = player.coin.ToString();
                     imgOppositeAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
-                    imgOppositeReady.enabled = player.isReady;
+                    imgOppositeReady.gameObject.SetActive(player.isReady);
                 }
                 else if (value == 1 || value == -3)
                 {
                     txtRightUsername.text = player.username;
                     txtRightCoinNumber.text = player.coin.ToString();
                     imgRightAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
-                    imgRightReady.enabled = player.isReady;
+                    imgRightReady.gameObject.SetActive(player.isReady);
                 }
                 else if (value == -1 || value == 3)
                 {
                     txtLeftUsername.text = player.username;
                     txtLeftCoinNumber.text = player.coin.ToString();
                     imgLeftAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
-                    imgLeftReady.enabled = player.isReady;
+                    imgLeftReady.gameObject.SetActive(player.isReady);
                 }
             }
         }

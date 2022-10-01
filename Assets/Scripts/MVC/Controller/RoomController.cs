@@ -65,6 +65,7 @@ namespace MVC.Controller
         // 发起准备请求
         private void Ready()
         {
+            NetworkManager.Instance.AddListener(MessageId.Ready, OnReady);
             ReadyReq req = new() {userId = UserModel.Instance.UserId, roomId = RoomModel.Instance.RoomId};
             NetworkManager.Instance.Send(MessageId.Ready, req);
         }
