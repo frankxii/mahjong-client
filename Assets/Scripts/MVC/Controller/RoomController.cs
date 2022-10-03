@@ -65,9 +65,10 @@ namespace MVC.Controller
         // 发起准备请求
         private void Ready()
         {
-            NetworkManager.Instance.AddListener(MessageId.Ready, OnReady);
-            ReadyReq req = new() {userId = UserModel.Instance.UserId, roomId = RoomModel.Instance.RoomId};
-            NetworkManager.Instance.Send(MessageId.Ready, req);
+            view.ShowHandCard();
+            // NetworkManager.Instance.AddListener(MessageId.Ready, OnReady);
+            // ReadyReq req = new() {userId = UserModel.Instance.UserId, roomId = RoomModel.Instance.RoomId};
+            // NetworkManager.Instance.Send(MessageId.Ready, req);
         }
 
         // 准备服务器回调
@@ -78,6 +79,18 @@ namespace MVC.Controller
             {
                 view.Ready();
             }
+        }
+        
+        // 发牌回调
+        private void OnDeal(string json)
+        {
+            // 离开房间按钮关闭
+            view.btnLeaveRoom.gameObject.SetActive(false);
+            // 更新对战局数
+            // 播放色子动画
+            // 更新本家手牌和对手手牌
+            
+            // 更新房间剩余牌数
         }
     }
 }

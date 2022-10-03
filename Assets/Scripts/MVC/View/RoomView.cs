@@ -38,6 +38,7 @@ namespace MVC.View
         public Image imgSelfAvatar;
         public Text txtSelfUsername;
         public Text txtSelfCoinNumber;
+        public Transform selfHandCardPos;
 
         [Header("对家")]
         public Image imgOppositeAvatar;
@@ -139,6 +140,33 @@ namespace MVC.View
                     imgLeftAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
                     imgLeftReady.gameObject.SetActive(player.isReady);
                 }
+            }
+        }
+
+        private void LoadSprite()
+        {
+            
+        }
+
+        public void ShowHandCard()
+        {
+            Sprite[] sprites = Resources.LoadAll<Sprite>("Art/SelfHandCard");
+            Dictionary<byte, Sprite> mapping = new();
+            foreach (Sprite sprite in sprites)
+            {
+                mapping.Add(byte.Parse(sprite.name), sprite);
+            }
+
+            byte[] handCards = new byte[] {0x01, 0x02, 0x03, 0x04, 0x11, 0x21, 0x12, 0x22};
+            GameObject selfHandCardPrefab = Resources.Load<GameObject>("Card/SelfHandCardPrefab");
+            int offset = 0;
+
+            foreach (byte card in handCards)
+            {
+                GameObject cardObject=Instantiate(selfHandCardPrefab, selfHandCardPos);
+                cardObject.GetComponent<Image>().sprite = mapping[card];
+                cardObject.transform.localPosition += offset * Vector3.right;
+                offset -= 118;
             }
         }
     }
