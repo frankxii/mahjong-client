@@ -9,6 +9,7 @@ namespace MVC.View
 {
     public class RoomView : BaseView
     {
+        public Text txtRemainCard; // 剩余牌数
         public Text txtRoomId; // 房间ID
         public Text txtCycle; // 当前圈数
         public Image imgDealerWind; // 中控

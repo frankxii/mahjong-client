@@ -8,7 +8,8 @@ namespace Protocol
         JoinRoom = 1002, // 加入房间
         UpdatePlayer = 1003, // 更新房间玩家信息
         LeaveRoom = 1004, // 玩家离开房间
-        Ready = 1005 // 玩家准备
+        Ready = 1005, // 玩家准备
+        Deal = 1006 //发牌
     }
 
     public class Response<T>

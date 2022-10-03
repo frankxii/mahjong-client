@@ -761,6 +761,7 @@ GameObject:
   - component: {fileID: 4706302639580563530}
   - component: {fileID: 2386042471128716366}
   - component: {fileID: 1631852726586636142}
+  - component: {fileID: 6596405785411416009}
   m_Layer: 5
   m_Name: labelUsername
   m_TagString: Untagged
@@ -830,6 +831,21 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\u8D26\u53F7"
+--- !u!114 &6596405785411416009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7188277032612433993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &7577191356252643082
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,6 +937,7 @@ GameObject:
   - component: {fileID: 2683182690693555392}
   - component: {fileID: 7269326979420178994}
   - component: {fileID: 5611010999339917209}
+  - component: {fileID: 5640718231781502755}
   m_Layer: 5
   m_Name: labelPassword
   m_TagString: Untagged
@@ -990,6 +1007,21 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "\u5BC6\u7801"
+--- !u!114 &5640718231781502755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8092929580908071416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &8714591726681030083
 GameObject:
   m_ObjectHideFlags: 0
