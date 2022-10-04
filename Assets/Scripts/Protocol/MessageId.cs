@@ -9,7 +9,8 @@ namespace Protocol
         UpdatePlayer = 1003, // 更新房间玩家信息
         LeaveRoom = 1004, // 玩家离开房间
         Ready = 1005, // 玩家准备
-        Deal = 1006 //发牌
+        DealCard = 1006, // 发牌
+        SortCard = 1007 // 理牌
     }
 
     public class Response<T>
@@ -44,6 +45,12 @@ namespace Protocol
     }
 
     public class ReadyReq
+    {
+        public int userId;
+        public int roomId;
+    }
+
+    public class SortCardReq
     {
         public int userId;
         public int roomId;

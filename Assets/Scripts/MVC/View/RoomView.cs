@@ -110,10 +110,19 @@ namespace MVC.View
         }
 
         // 准备按钮回调
-        public void Ready()
+        public void OnReady()
         {
             imgSelfReady.gameObject.SetActive(true);
             btnReady.gameObject.SetActive(false);
+        }
+
+        // 关闭所有准备状态的勾号
+        public void HideAllReadyFlag()
+        {
+            imgSelfReady.gameObject.SetActive(false);
+            imgOppositeReady.gameObject.SetActive(false);
+            imgLeftReady.gameObject.SetActive(false);
+            imgRightReady.gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -170,9 +179,8 @@ namespace MVC.View
         }
 
 
-        public void DealCard(List<byte>handCards)
+        public void DealCard(List<byte> handCards)
         {
-
             // 初始化本家手牌
             int offset = 0;
             foreach (byte card in handCards)
@@ -209,6 +217,11 @@ namespace MVC.View
                 cardObject.transform.localPosition += offset * Vector3.down;
                 offset += 40;
             }
+        }
+
+        public void SortCard(List<byte> handCards)
+        {
+            
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Data;
 using MVC.Base;
 using MVC.Model;
@@ -29,7 +30,7 @@ namespace MVC.Controller
             NetworkManager.Instance.RemoveListener(MessageId.UpdatePlayer, OnUpdatePlayer);
             NetworkManager.Instance.RemoveListener(MessageId.LeaveRoom, OnLeaveRoom);
             NetworkManager.Instance.RemoveListener(MessageId.Ready, OnReady);
-            NetworkManager.Instance.RemoveListener(MessageId.Deal, OnDeal);
+            NetworkManager.Instance.RemoveListener(MessageId.DealCard, OnDeal);
             // 清空房间信息
             RoomModel.Instance = null;
             base.Destroy();
@@ -67,7 +68,7 @@ namespace MVC.Controller
         private void Ready()
         {
             NetworkManager.Instance.AddListener(MessageId.Ready, OnReady);
-            NetworkManager.Instance.AddListener(MessageId.Deal, OnDeal);
+            NetworkManager.Instance.AddListener(MessageId.DealCard, OnDeal);
             ReadyReq req = new() {userId = UserModel.Instance.UserId, roomId = RoomModel.Instance.RoomId};
             NetworkManager.Instance.Send(MessageId.Ready, req);
         }
@@ -78,7 +79,7 @@ namespace MVC.Controller
             Response<object> resp = ProtoUtil.Deserialize<Response<object>>(json);
             if (resp.code == 0)
             {
-                view.Ready();
+                view.OnReady();
             }
         }
 
@@ -89,12 +90,35 @@ namespace MVC.Controller
 
             // 离开房间按钮关闭
             // view.btnLeaveRoom.gameObject.SetActive(false);
-            // 准备状态更新
+            // 关闭所有准备状态
+            view.HideAllReadyFlag();
             // 更新对战局数
             // 播放色子动画
             // 更新本家手牌和对手手牌
             view.DealCard(handCards);
+            // 理牌
+            _ = SortCardAsync();
             // 更新房间剩余牌数
+        }
+
+        private async Task SortCardAsync()
+        {
+            await Task.Delay(1000);
+            NetworkManager.Instance.AddListener(MessageId.SortCard, OnSortCard);
+            NetworkManager.Instance.Send(MessageId.SortCard, new SortCardReq()
+            {
+                userId = UserModel.Instance.UserId,
+                roomId = RoomModel.Instance.RoomId
+            });
+        }
+
+        private void OnSortCard(string json)
+        {
+            Response<List<byte>> resp = ProtoUtil.Deserialize<Response<List<byte>>>(json);
+            if (resp.code == 0)
+            {
+                view.SortCard(resp.data);
+            }
         }
     }
 }
