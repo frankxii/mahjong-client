@@ -109,7 +109,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -99, y: 261}
+  m_AnchoredPosition: {x: -99, y: 226}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1238186456083575283
@@ -300,7 +300,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 99, y: 221}
+  m_AnchoredPosition: {x: 99, y: 250}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2172128692735525972
@@ -336,7 +336,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1462, y: -15}
+  m_AnchoredPosition: {x: 1628, y: -15}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2434543164410638816
@@ -614,7 +614,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 107, y: 0}
+  m_AnchoredPosition: {x: 200, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3570676691999190075
@@ -1212,12 +1212,15 @@ MonoBehaviour:
   imgOppositeAvatar: {fileID: 5772343578945424280}
   txtOppositeUsername: {fileID: 5772343579063754223}
   txtOppositeCoinNumber: {fileID: 5772343578617616052}
+  oppositeHandCardPos: {fileID: 7560105076211327707}
   imgLeftAvatar: {fileID: 5772343577579419830}
   txtLeftUsername: {fileID: 5772343577451361515}
   txtLeftCoinNumber: {fileID: 5772343577922385253}
+  leftHandCardPos: {fileID: 421305955517027929}
   imgRightAvatar: {fileID: 5772343578796822854}
   txtRightUsername: {fileID: 5772343577900577684}
   txtRightCoinNumber: {fileID: 5772343577422005812}
+  rightHandCardPos: {fileID: 5943915770112845577}
 --- !u!1 &5772343577579419832
 GameObject:
   m_ObjectHideFlags: 0

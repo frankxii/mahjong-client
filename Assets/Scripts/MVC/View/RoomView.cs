@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Data;
 using MVC.Base;
@@ -13,8 +14,13 @@ namespace MVC.View
         public Text txtRoomId; // 房间ID
         public Text txtCycle; // 当前圈数
         public Image imgDealerWind; // 中控
-
         public Button btnLeaveRoom; // 离开房间按钮
+
+        private Dictionary<byte, Sprite> _selfHandCardMapping = new(); // 本家手牌图片字典
+        private GameObject _selfHandCardPrefab; // 本家手牌prefab
+        private GameObject _oppositeHandCardPrefab; // 对家手牌prefab
+        private GameObject _leftHandCardPrefab; // 上家手牌prefab
+        private GameObject _rightHandCardPrefab; // 下家手牌prefab
 
         [Header("东南西北图片")]
         public Sprite eastWind;
@@ -35,25 +41,45 @@ namespace MVC.View
         public Image imgRightReady;
 
         [Header("本家")]
-        public Image imgSelfAvatar;
-        public Text txtSelfUsername;
-        public Text txtSelfCoinNumber;
-        public Transform selfHandCardPos;
+        public Image imgSelfAvatar; // 头像
+        public Text txtSelfUsername; // 用户名
+        public Text txtSelfCoinNumber; // 金币
+        public Transform selfHandCardPos; // 手牌初始挂载位置
 
         [Header("对家")]
         public Image imgOppositeAvatar;
         public Text txtOppositeUsername;
         public Text txtOppositeCoinNumber;
+        public Transform oppositeHandCardPos;
 
         [Header("上家")]
         public Image imgLeftAvatar;
         public Text txtLeftUsername;
         public Text txtLeftCoinNumber;
+        public Transform leftHandCardPos;
 
         [Header("下家")]
         public Image imgRightAvatar;
         public Text txtRightUsername;
         public Text txtRightCoinNumber;
+        public Transform rightHandCardPos;
+
+
+        private void Start()
+        {
+            // 加载手牌图片
+            Sprite[] sprites = Resources.LoadAll<Sprite>("Art/SelfHandCard");
+            foreach (Sprite sprite in sprites)
+            {
+                _selfHandCardMapping.Add(byte.Parse(sprite.name), sprite);
+            }
+
+            // 加载手牌prefab
+            _selfHandCardPrefab = Resources.Load<GameObject>("Card/SelfHandCardPrefab");
+            _oppositeHandCardPrefab = Resources.Load<GameObject>("Card/OppositeHandCardPrefab");
+            _leftHandCardPrefab = Resources.Load<GameObject>("Card/LeftHandCardPrefab");
+            _rightHandCardPrefab = Resources.Load<GameObject>("Card/RightHandCardPrefab");
+        }
 
         /// <summary>
         /// 更新房间基础信息
@@ -143,30 +169,45 @@ namespace MVC.View
             }
         }
 
-        private void LoadSprite()
-        {
-            
-        }
 
-        public void ShowHandCard()
+        public void DealCard(List<byte>handCards)
         {
-            Sprite[] sprites = Resources.LoadAll<Sprite>("Art/SelfHandCard");
-            Dictionary<byte, Sprite> mapping = new();
-            foreach (Sprite sprite in sprites)
-            {
-                mapping.Add(byte.Parse(sprite.name), sprite);
-            }
 
-            byte[] handCards = new byte[] {0x01, 0x02, 0x03, 0x04, 0x11, 0x21, 0x12, 0x22};
-            GameObject selfHandCardPrefab = Resources.Load<GameObject>("Card/SelfHandCardPrefab");
+            // 初始化本家手牌
             int offset = 0;
-
             foreach (byte card in handCards)
             {
-                GameObject cardObject=Instantiate(selfHandCardPrefab, selfHandCardPos);
-                cardObject.GetComponent<Image>().sprite = mapping[card];
+                GameObject cardObject = Instantiate(_selfHandCardPrefab, selfHandCardPos);
+                cardObject.GetComponent<Image>().sprite = _selfHandCardMapping[card];
+                cardObject.transform.localPosition += offset * Vector3.left;
+                offset += 115;
+            }
+
+            // 初始化对家手牌
+            offset = 0;
+            for (int i = 0; i < 13; i++)
+            {
+                GameObject cardObject = Instantiate(_oppositeHandCardPrefab, oppositeHandCardPos);
                 cardObject.transform.localPosition += offset * Vector3.right;
-                offset -= 118;
+                offset += 70;
+            }
+
+            // 初始化上家手牌
+            offset = 0;
+            for (int i = 0; i < 13; i++)
+            {
+                GameObject cardObject = Instantiate(_leftHandCardPrefab, leftHandCardPos);
+                cardObject.transform.localPosition += offset * Vector3.down;
+                offset += 40;
+            }
+
+            // 初始化下家手牌
+            offset = 0;
+            for (int i = 0; i < 13; i++)
+            {
+                GameObject cardObject = Instantiate(_rightHandCardPrefab, rightHandCardPos);
+                cardObject.transform.localPosition += offset * Vector3.down;
+                offset += 40;
             }
         }
     }

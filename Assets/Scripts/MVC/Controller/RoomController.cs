@@ -29,6 +29,7 @@ namespace MVC.Controller
             NetworkManager.Instance.RemoveListener(MessageId.UpdatePlayer, OnUpdatePlayer);
             NetworkManager.Instance.RemoveListener(MessageId.LeaveRoom, OnLeaveRoom);
             NetworkManager.Instance.RemoveListener(MessageId.Ready, OnReady);
+            NetworkManager.Instance.RemoveListener(MessageId.Deal, OnDeal);
             // 清空房间信息
             RoomModel.Instance = null;
             base.Destroy();
@@ -65,10 +66,10 @@ namespace MVC.Controller
         // 发起准备请求
         private void Ready()
         {
-            view.ShowHandCard();
-            // NetworkManager.Instance.AddListener(MessageId.Ready, OnReady);
-            // ReadyReq req = new() {userId = UserModel.Instance.UserId, roomId = RoomModel.Instance.RoomId};
-            // NetworkManager.Instance.Send(MessageId.Ready, req);
+            NetworkManager.Instance.AddListener(MessageId.Ready, OnReady);
+            NetworkManager.Instance.AddListener(MessageId.Deal, OnDeal);
+            ReadyReq req = new() {userId = UserModel.Instance.UserId, roomId = RoomModel.Instance.RoomId};
+            NetworkManager.Instance.Send(MessageId.Ready, req);
         }
 
         // 准备服务器回调
@@ -80,16 +81,19 @@ namespace MVC.Controller
                 view.Ready();
             }
         }
-        
+
         // 发牌回调
         private void OnDeal(string json)
         {
+            List<byte> handCards = ProtoUtil.Deserialize<List<byte>>(json);
+
             // 离开房间按钮关闭
-            view.btnLeaveRoom.gameObject.SetActive(false);
+            // view.btnLeaveRoom.gameObject.SetActive(false);
+            // 准备状态更新
             // 更新对战局数
             // 播放色子动画
             // 更新本家手牌和对手手牌
-            
+            view.DealCard(handCards);
             // 更新房间剩余牌数
         }
     }
