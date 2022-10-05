@@ -14,9 +14,12 @@ namespace MVC.Controller
 
         protected override void OnViewMounted()
         {
+            // 注册网络回调方法
+            RegisterCallback();
+
             view.UpdateRoomInfo(RoomModel.Instance);
             view.UpdatePlayerInfo(RoomModel.Instance.DealerWind, RoomModel.Instance.Players);
-            NetworkManager.Instance.AddListener(MessageId.UpdatePlayer, OnUpdatePlayer);
+
 
             // 绑定离开房间事件
             view.btnLeaveRoom.onClick.AddListener(LeaveRoom);
@@ -24,13 +27,28 @@ namespace MVC.Controller
             view.btnReady.onClick.AddListener(Ready);
         }
 
-        public override void Destroy()
+        private void RegisterCallback()
         {
-            // 注销回调事件
+            NetworkManager.Instance.AddListener(MessageId.UpdatePlayer, OnUpdatePlayer);
+            NetworkManager.Instance.AddListener(MessageId.LeaveRoom, OnLeaveRoom);
+            NetworkManager.Instance.AddListener(MessageId.Ready, OnReady);
+            NetworkManager.Instance.AddListener(MessageId.DealCard, OnDeal);
+            NetworkManager.Instance.AddListener(MessageId.DrawCardEvent, OnDrawCard);
+        }
+
+        private void RemoveCallback()
+        {
             NetworkManager.Instance.RemoveListener(MessageId.UpdatePlayer, OnUpdatePlayer);
             NetworkManager.Instance.RemoveListener(MessageId.LeaveRoom, OnLeaveRoom);
             NetworkManager.Instance.RemoveListener(MessageId.Ready, OnReady);
             NetworkManager.Instance.RemoveListener(MessageId.DealCard, OnDeal);
+            NetworkManager.Instance.RemoveListener(MessageId.DrawCardEvent, OnDrawCard);
+        }
+
+        public override void Destroy()
+        {
+            // 注销回调事件
+            RemoveCallback();
             // 清空房间信息
             RoomModel.Instance = null;
             base.Destroy();
@@ -48,7 +66,7 @@ namespace MVC.Controller
         private void LeaveRoom()
         {
             LeaveRoomReq req = new() {userId = UserModel.Instance.UserId, roomId = RoomModel.Instance.RoomId};
-            NetworkManager.Instance.AddListener(MessageId.LeaveRoom, OnLeaveRoom);
+
             NetworkManager.Instance.Send(MessageId.LeaveRoom, req);
         }
 
@@ -67,8 +85,6 @@ namespace MVC.Controller
         // 发起准备请求
         private void Ready()
         {
-            NetworkManager.Instance.AddListener(MessageId.Ready, OnReady);
-            NetworkManager.Instance.AddListener(MessageId.DealCard, OnDeal);
             ReadyReq req = new() {userId = UserModel.Instance.UserId, roomId = RoomModel.Instance.RoomId};
             NetworkManager.Instance.Send(MessageId.Ready, req);
         }
@@ -99,12 +115,20 @@ namespace MVC.Controller
             await Task.Delay(1000);
             // 理牌
             view.SortCard(handCards);
-            NetworkManager.Instance.Send(MessageId.SortCard, new SortCardReq()
+
+            // 通知服务器已理牌完毕，可以开始摸牌
+            NetworkManager.Instance.Send(MessageId.SortCardFinished, new SortCardReq()
             {
                 userId = UserModel.Instance.UserId,
                 roomId = RoomModel.Instance.RoomId
             });
             // 更新房间剩余牌数
+        }
+
+        private void OnDrawCard(string json)
+        {
+            DrawCardEvent data = ProtoUtil.Deserialize<DrawCardEvent>(json);
+            // 更新本家或其他玩家摸牌
         }
     }
 }
