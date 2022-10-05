@@ -2,11 +2,20 @@ using System.Collections.Generic;
 using Data;
 using MVC.Base;
 using MVC.Model;
+using Protocol;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace MVC.View
 {
+    public enum SeatPos
+    {
+        Self,
+        Opposite,
+        Left,
+        Right
+    }
+
     public class RoomView : BaseView
     {
         public Text txtRemainCard; // 剩余牌数
@@ -44,24 +53,28 @@ namespace MVC.View
         public Text txtSelfUsername; // 用户名
         public Text txtSelfCoinNumber; // 金币
         public Transform selfHandCardPos; // 手牌初始挂载位置
+        public Transform selfDrawCardPos; // 摸牌挂载位置
 
         [Header("对家")]
         public Image imgOppositeAvatar;
         public Text txtOppositeUsername;
         public Text txtOppositeCoinNumber;
         public Transform oppositeHandCardPos;
+        public Transform oppositeDrawCardPos;
 
         [Header("上家")]
         public Image imgLeftAvatar;
         public Text txtLeftUsername;
         public Text txtLeftCoinNumber;
         public Transform leftHandCardPos;
+        public Transform leftDrawCardPos;
 
         [Header("下家")]
         public Image imgRightAvatar;
         public Text txtRightUsername;
         public Text txtRightCoinNumber;
         public Transform rightHandCardPos;
+        public Transform rightDrawCardPos;
 
 
         private void Start()
@@ -78,6 +91,21 @@ namespace MVC.View
             _oppositeHandCardPrefab = Resources.Load<GameObject>("Card/OppositeHandCardPrefab");
             _leftHandCardPrefab = Resources.Load<GameObject>("Card/LeftHandCardPrefab");
             _rightHandCardPrefab = Resources.Load<GameObject>("Card/RightHandCardPrefab");
+        }
+
+        // 通过本家门风和玩家门风，来判断玩家位置是本家、对家、上家、下家
+        private SeatPos DealerWindToSeatPos(byte selfDealerWind, byte playerDealerWind)
+        {
+            int value = playerDealerWind - selfDealerWind;
+
+            if (value == 2 || value == -2)
+                return SeatPos.Opposite;
+            else if (value == 1 || value == -3)
+                return SeatPos.Right;
+            else if (value == -1 || value == 3)
+                return SeatPos.Left;
+            else
+                return SeatPos.Self;
         }
 
         /// <summary>
@@ -145,34 +173,33 @@ namespace MVC.View
             foreach (PlayerInfo player in players)
             {
                 // 东南西北门风的值为1234，通过玩家门风与本家的差值，来判断每个玩家所在的位置
-                int value = player.dealerWind - dealerWind;
-                if (value == 0)
+                SeatPos seat = DealerWindToSeatPos(dealerWind, player.dealerWind);
+                switch (seat)
                 {
-                    txtSelfUsername.text = player.username;
-                    txtSelfCoinNumber.text = player.coin.ToString();
-                    imgSelfAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
-                    imgSelfReady.gameObject.SetActive(player.isReady);
-                }
-                else if (value == 2 || value == -2)
-                {
-                    txtOppositeUsername.text = player.username;
-                    txtOppositeCoinNumber.text = player.coin.ToString();
-                    imgOppositeAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
-                    imgOppositeReady.gameObject.SetActive(player.isReady);
-                }
-                else if (value == 1 || value == -3)
-                {
-                    txtRightUsername.text = player.username;
-                    txtRightCoinNumber.text = player.coin.ToString();
-                    imgRightAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
-                    imgRightReady.gameObject.SetActive(player.isReady);
-                }
-                else if (value == -1 || value == 3)
-                {
-                    txtLeftUsername.text = player.username;
-                    txtLeftCoinNumber.text = player.coin.ToString();
-                    imgLeftAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
-                    imgLeftReady.gameObject.SetActive(player.isReady);
+                    case SeatPos.Self:
+                        txtSelfUsername.text = player.username;
+                        txtSelfCoinNumber.text = player.coin.ToString();
+                        imgSelfAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
+                        imgSelfReady.gameObject.SetActive(player.isReady);
+                        break;
+                    case SeatPos.Opposite:
+                        txtOppositeUsername.text = player.username;
+                        txtOppositeCoinNumber.text = player.coin.ToString();
+                        imgOppositeAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
+                        imgOppositeReady.gameObject.SetActive(player.isReady);
+                        break;
+                    case SeatPos.Left:
+                        txtLeftUsername.text = player.username;
+                        txtLeftCoinNumber.text = player.coin.ToString();
+                        imgLeftAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
+                        imgLeftReady.gameObject.SetActive(player.isReady);
+                        break;
+                    case SeatPos.Right:
+                        txtRightUsername.text = player.username;
+                        txtRightCoinNumber.text = player.coin.ToString();
+                        imgRightAvatar.sprite = player.gender == 1 ? boyAvatar : girlAvatar;
+                        imgRightReady.gameObject.SetActive(player.isReady);
+                        break;
                 }
             }
         }
@@ -233,6 +260,28 @@ namespace MVC.View
         {
             handCards.Sort();
             ShowHandCards(handCards);
+        }
+
+        public void DrawCard(byte dealerWind, DrawCardEvent data)
+        {
+            // 判断摸牌玩家位置
+            SeatPos seat = DealerWindToSeatPos(dealerWind, data.dealerWind);
+            switch (seat)
+            {
+                case SeatPos.Self:
+                    GameObject cardObject = Instantiate(_selfHandCardPrefab, selfDrawCardPos);
+                    cardObject.GetComponent<Image>().sprite = _selfHandCardMapping[data.card];
+                    break;
+                case SeatPos.Opposite:
+                    Instantiate(_oppositeHandCardPrefab, oppositeDrawCardPos);
+                    break;
+                case SeatPos.Left:
+                    Instantiate(_leftHandCardPrefab, leftDrawCardPos);
+                    break;
+                case SeatPos.Right:
+                    Instantiate(_rightHandCardPrefab, rightDrawCardPos);
+                    break;
+            }
         }
     }
 }

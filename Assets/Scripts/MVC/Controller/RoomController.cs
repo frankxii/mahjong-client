@@ -125,10 +125,12 @@ namespace MVC.Controller
             // 更新房间剩余牌数
         }
 
+        // 摸牌
         private void OnDrawCard(string json)
         {
             DrawCardEvent data = ProtoUtil.Deserialize<DrawCardEvent>(json);
             // 更新本家或其他玩家摸牌
+            view.DrawCard(RoomModel.Instance.DealerWind, data);
         }
     }
 }
