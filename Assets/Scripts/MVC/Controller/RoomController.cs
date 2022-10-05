@@ -84,7 +84,7 @@ namespace MVC.Controller
         }
 
         // 发牌回调
-        private void OnDeal(string json)
+        private async void OnDeal(string json)
         {
             List<byte> handCards = ProtoUtil.Deserialize<List<byte>>(json);
 
@@ -96,29 +96,15 @@ namespace MVC.Controller
             // 播放色子动画
             // 更新本家手牌和对手手牌
             view.DealCard(handCards);
-            // 理牌
-            _ = SortCardAsync();
-            // 更新房间剩余牌数
-        }
-
-        private async Task SortCardAsync()
-        {
             await Task.Delay(1000);
-            NetworkManager.Instance.AddListener(MessageId.SortCard, OnSortCard);
+            // 理牌
+            view.SortCard(handCards);
             NetworkManager.Instance.Send(MessageId.SortCard, new SortCardReq()
             {
                 userId = UserModel.Instance.UserId,
                 roomId = RoomModel.Instance.RoomId
             });
-        }
-
-        private void OnSortCard(string json)
-        {
-            Response<List<byte>> resp = ProtoUtil.Deserialize<Response<List<byte>>>(json);
-            if (resp.code == 0)
-            {
-                view.SortCard(resp.data);
-            }
+            // 更新房间剩余牌数
         }
     }
 }

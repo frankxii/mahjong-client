@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Data;
 using MVC.Base;
@@ -178,21 +177,32 @@ namespace MVC.View
             }
         }
 
-
-        public void DealCard(List<byte> handCards)
+        private void ShowHandCards(List<byte> handCards)
         {
+            foreach (Transform child in selfHandCardPos)
+            {
+                Destroy(child.gameObject);
+            }
+
             // 初始化本家手牌
             int offset = 0;
-            foreach (byte card in handCards)
+
+            // 倒序遍历
+            for (int index = handCards.Count - 1; index > -1; index--)
             {
                 GameObject cardObject = Instantiate(_selfHandCardPrefab, selfHandCardPos);
-                cardObject.GetComponent<Image>().sprite = _selfHandCardMapping[card];
+                cardObject.GetComponent<Image>().sprite = _selfHandCardMapping[handCards[index]];
                 cardObject.transform.localPosition += offset * Vector3.left;
                 offset += 115;
             }
+        }
+
+        public void DealCard(List<byte> handCards)
+        {
+            ShowHandCards(handCards);
 
             // 初始化对家手牌
-            offset = 0;
+            int offset = 0;
             for (int i = 0; i < 13; i++)
             {
                 GameObject cardObject = Instantiate(_oppositeHandCardPrefab, oppositeHandCardPos);
@@ -221,7 +231,8 @@ namespace MVC.View
 
         public void SortCard(List<byte> handCards)
         {
-            
+            handCards.Sort();
+            ShowHandCards(handCards);
         }
     }
 }
