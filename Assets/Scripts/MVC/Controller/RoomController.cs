@@ -113,7 +113,7 @@ namespace MVC.Controller
             // 更新对战局数
             // 播放色子动画
             // 更新本家手牌和对手手牌
-            view.DealCard(handCards);
+            view.OnDealCard(handCards);
             await Task.Delay(1000);
             // 理牌
             view.SortCard(handCards);
@@ -132,7 +132,7 @@ namespace MVC.Controller
         {
             DrawCardEvent data = ProtoUtil.Deserialize<DrawCardEvent>(json);
             // 更新本家或其他玩家摸牌
-            view.DrawCard(RoomModel.Instance.DealerWind, data);
+            view.OnDrawCard(RoomModel.Instance.DealerWind, data);
         }
 
         private void OnPlayCard(byte card)

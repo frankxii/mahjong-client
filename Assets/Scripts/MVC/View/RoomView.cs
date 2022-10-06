@@ -234,16 +234,57 @@ namespace MVC.View
         // 出牌回调
         private void OnPlayCard(byte card, GameObject go)
         {
-            if (canPlayCard)
+            // 当前不能出牌
+            if (!canPlayCard)
+                return;
+
+            // 出的手牌区的牌
+            if (go.transform.parent.name == "selfHandCardPos")
             {
-                // 出牌，客户端逻辑
-                // 判断出的是摸牌区的牌还是手牌区的牌
-                // 回调controller
-                onPlayCard?.Invoke(card);
+                Vector3 pos = go.transform.localPosition;
+                // 有一张牌出掉，前面的牌需要补位
+                foreach (Transform cardObject in selfHandCardPos)
+                {
+                    if (cardObject.localPosition.x < pos.x)
+                        cardObject.localPosition += new Vector3(115, 0);
+                }
+
+                if (selfDrawCardPos.childCount > 0)
+                {
+                    int offset = 0;
+                    int index = 0;
+                    Transform drawCardObject = selfDrawCardPos.GetChild(0);
+                    byte cardNumber = drawCardObject.gameObject.GetComponent<HandCard>().card;
+                    foreach (Transform cardObject in selfHandCardPos)
+                    {
+                        if (cardObject.gameObject.GetComponent<HandCard>().card > cardNumber)
+                        {
+                            if (cardObject.gameObject == go)
+                                continue;
+                            offset -= 115;
+                            index += 1;
+                        }
+                        else
+                        {
+                            cardObject.localPosition -= new Vector3(115, 0);
+                        }
+                    }
+
+                    // 设置新摸的牌的位置以及层级顺序
+                    drawCardObject.SetParent(selfHandCardPos);
+                    drawCardObject.localPosition = new Vector3(offset, 0);
+                    drawCardObject.SetSiblingIndex(index);
+                }
             }
+
+            canPlayCard = false; // 出完一张牌后不能再继续出牌
+            Destroy(go);
+            // TODO:在出牌区增加一张牌
+            // 回调controller
+            onPlayCard?.Invoke(card);
         }
 
-        public void DealCard(List<byte> handCards)
+        public void OnDealCard(List<byte> handCards)
         {
             ShowHandCards(handCards);
 
@@ -281,7 +322,7 @@ namespace MVC.View
             ShowHandCards(handCards);
         }
 
-        public void DrawCard(byte dealerWind, DrawCardEvent data)
+        public void OnDrawCard(byte dealerWind, DrawCardEvent data)
         {
             // 判断摸牌玩家位置
             SeatPos seat = DealerWindToSeatPos(dealerWind, data.dealerWind);
@@ -290,7 +331,10 @@ namespace MVC.View
                 case SeatPos.Self:
                     GameObject cardObject = Instantiate(_selfHandCardPrefab, selfDrawCardPos);
                     cardObject.GetComponent<Image>().sprite = _selfHandCardMapping[data.card];
-                    cardObject.GetComponent<Button>().onClick.AddListener(() => Debug.Log(data.card));
+                    HandCard component = cardObject.GetComponent<HandCard>();
+                    component.card = data.card;
+                    component.onPlayCard += OnPlayCard;
+                    canPlayCard = true;
                     break;
                 case SeatPos.Opposite:
                     Instantiate(_oppositeHandCardPrefab, oppositeDrawCardPos);
