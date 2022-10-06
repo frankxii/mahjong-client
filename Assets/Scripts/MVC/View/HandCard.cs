@@ -1,3 +1,4 @@
+using System;
 using MVC.Base;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,6 +10,7 @@ namespace MVC.View
     {
         public byte card;
         private bool isSelected;
+        public event Action<byte, GameObject> onPlayCard;
 
         private void Start()
         {
@@ -29,7 +31,7 @@ namespace MVC.View
         private void OnClick()
         {
             if (isSelected)
-                Debug.Log(card);
+                onPlayCard?.Invoke(card, gameObject);
             else
                 isSelected = true;
         }

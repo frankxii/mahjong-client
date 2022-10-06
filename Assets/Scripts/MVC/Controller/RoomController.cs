@@ -25,6 +25,8 @@ namespace MVC.Controller
             view.btnLeaveRoom.onClick.AddListener(LeaveRoom);
             // 绑定准备事件
             view.btnReady.onClick.AddListener(Ready);
+            // 绑定出牌事件
+            view.onPlayCard += OnPlayCard;
         }
 
         private void RegisterCallback()
@@ -131,6 +133,17 @@ namespace MVC.Controller
             DrawCardEvent data = ProtoUtil.Deserialize<DrawCardEvent>(json);
             // 更新本家或其他玩家摸牌
             view.DrawCard(RoomModel.Instance.DealerWind, data);
+        }
+
+        private void OnPlayCard(byte card)
+        {
+            PlayCardReq req = new()
+            {
+                roomId = RoomModel.Instance.RoomId,
+                userId = UserModel.Instance.UserId,
+                card = card
+            };
+            NetworkManager.Instance.Send(MessageId.PlayCard, req);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Data;
 using MVC.Base;
@@ -23,6 +24,8 @@ namespace MVC.View
         public Text txtCycle; // 当前圈数
         public Image imgDealerWind; // 中控
         public Button btnLeaveRoom; // 离开房间按钮
+        public bool canPlayCard;
+        public event Action<byte> onPlayCard;
 
         private Dictionary<byte, Sprite> _selfHandCardMapping = new(); // 本家手牌图片字典
         private GameObject _selfHandCardPrefab; // 本家手牌prefab
@@ -220,10 +223,23 @@ namespace MVC.View
                 GameObject cardObject = Instantiate(_selfHandCardPrefab, selfHandCardPos);
                 cardObject.GetComponent<Image>().sprite = _selfHandCardMapping[handCards[index]];
                 cardObject.transform.localPosition += offset * Vector3.left;
-                
-                cardObject.GetComponent<HandCard>().card = handCards[index];
+                HandCard component = cardObject.GetComponent<HandCard>();
+                component.card = handCards[index];
+                component.onPlayCard += OnPlayCard;
                 // 处理出牌逻辑，广播出牌事件，controller接听出牌事件
                 offset += 115;
+            }
+        }
+
+        // 出牌回调
+        private void OnPlayCard(byte card, GameObject go)
+        {
+            if (canPlayCard)
+            {
+                // 出牌，客户端逻辑
+                // 判断出的是摸牌区的牌还是手牌区的牌
+                // 回调controller
+                onPlayCard?.Invoke(card);
             }
         }
 
