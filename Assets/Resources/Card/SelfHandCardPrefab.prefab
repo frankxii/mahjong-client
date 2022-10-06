@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1655499569929498561}
   - component: {fileID: 3668330163802667733}
   - component: {fileID: 6471112691370663478}
+  - component: {fileID: 5862755160790407703}
   m_Layer: 5
   m_Name: SelfHandCardPrefab
   m_TagString: Untagged
@@ -121,3 +122,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5862755160790407703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1152866489672685074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfc10d07d9c480a95933841c504077f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  card: 0

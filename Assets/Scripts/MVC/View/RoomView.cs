@@ -220,6 +220,9 @@ namespace MVC.View
                 GameObject cardObject = Instantiate(_selfHandCardPrefab, selfHandCardPos);
                 cardObject.GetComponent<Image>().sprite = _selfHandCardMapping[handCards[index]];
                 cardObject.transform.localPosition += offset * Vector3.left;
+                
+                cardObject.GetComponent<HandCard>().card = handCards[index];
+                // 处理出牌逻辑，广播出牌事件，controller接听出牌事件
                 offset += 115;
             }
         }
@@ -271,6 +274,7 @@ namespace MVC.View
                 case SeatPos.Self:
                     GameObject cardObject = Instantiate(_selfHandCardPrefab, selfDrawCardPos);
                     cardObject.GetComponent<Image>().sprite = _selfHandCardMapping[data.card];
+                    cardObject.GetComponent<Button>().onClick.AddListener(() => Debug.Log(data.card));
                     break;
                 case SeatPos.Opposite:
                     Instantiate(_oppositeHandCardPrefab, oppositeDrawCardPos);
