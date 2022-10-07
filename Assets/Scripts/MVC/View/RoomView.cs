@@ -28,10 +28,16 @@ namespace MVC.View
         public event Action<byte> onPlayCard;
 
         private Dictionary<byte, Sprite> _selfHandCardMapping = new(); // 本家手牌图片字典
+        private Dictionary<byte, Sprite> _selfPlayCardMapping = new(); // 本家出牌图片字典
+        private Dictionary<byte, Sprite> _leftPlayCardMapping = new(); // 上家出牌图片字典
+        private Dictionary<byte, Sprite> _rightPlayCardMapping = new(); // 下家出牌图片字典
         private GameObject _selfHandCardPrefab; // 本家手牌prefab
         private GameObject _oppositeHandCardPrefab; // 对家手牌prefab
         private GameObject _leftHandCardPrefab; // 上家手牌prefab
         private GameObject _rightHandCardPrefab; // 下家手牌prefab
+        private GameObject _selfPlayCardPrefab; // 本家出牌prefab
+        private GameObject _leftPlayCardPrefab; // 上家出牌prefab
+        private GameObject _rightPlayCardPrefab; // 下家出牌prefab
 
         [Header("东南西北图片")]
         public Sprite eastWind;
@@ -50,6 +56,16 @@ namespace MVC.View
         public Image imgOppositeReady;
         public Image imgLeftReady;
         public Image imgRightReady;
+
+        [Header("出牌区域")]
+        public Transform selfPlayCardPos1;
+        public Transform selfPlayCardPos2;
+        public Transform oppositePlayCardPos1;
+        public Transform oppositePlayCardPos2;
+        public Transform leftPlayCardPos1;
+        public Transform leftPlayCardPos2;
+        public Transform rightPlayCardPos1;
+        public Transform rightPlayCardPos2;
 
         [Header("本家")]
         public Image imgSelfAvatar; // 头像
@@ -82,11 +98,22 @@ namespace MVC.View
 
         private void Start()
         {
-            // 加载手牌图片
-            Sprite[] sprites = Resources.LoadAll<Sprite>("Art/SelfHandCard");
-            foreach (Sprite sprite in sprites)
+            Dictionary<string, Dictionary<byte, Sprite>> imgMapping = new()
             {
-                _selfHandCardMapping.Add(byte.Parse(sprite.name), sprite);
+                ["Art/SelfHandCard"] = _selfHandCardMapping,
+                ["Art/SelfPlayCard"] = _selfPlayCardMapping,
+                ["Art/LeftPlayCard"] = _leftPlayCardMapping,
+                ["Art/RightPlayCard"] = _rightPlayCardMapping
+            };
+            // 加载手牌和出牌图片
+            foreach (string path in imgMapping.Keys)
+            {
+                Sprite[] sprites = Resources.LoadAll<Sprite>(path);
+                Dictionary<byte, Sprite> dict = imgMapping[path];
+                foreach (Sprite sprite in sprites)
+                {
+                    dict.Add(byte.Parse(sprite.name), sprite);
+                }
             }
 
             // 加载手牌prefab
@@ -94,6 +121,10 @@ namespace MVC.View
             _oppositeHandCardPrefab = Resources.Load<GameObject>("Card/OppositeHandCardPrefab");
             _leftHandCardPrefab = Resources.Load<GameObject>("Card/LeftHandCardPrefab");
             _rightHandCardPrefab = Resources.Load<GameObject>("Card/RightHandCardPrefab");
+            // 加载出牌prefab
+            _selfPlayCardPrefab = Resources.Load<GameObject>("Card/SelfPlayCardPrefab");
+            _leftPlayCardPrefab = Resources.Load<GameObject>("Card/LeftPlayCardPrefab");
+            _rightPlayCardPrefab = Resources.Load<GameObject>("Card/RightPlayCardPrefab");
         }
 
         // 通过本家门风和玩家门风，来判断玩家位置是本家、对家、上家、下家
@@ -231,7 +262,7 @@ namespace MVC.View
             }
         }
 
-        // 出牌回调
+        // 本家出牌回调
         private void OnPlayCard(byte card, GameObject go)
         {
             // 当前不能出牌
@@ -279,9 +310,50 @@ namespace MVC.View
 
             canPlayCard = false; // 出完一张牌后不能再继续出牌
             Destroy(go);
-            // TODO:在出牌区增加一张牌
+            // 在出牌区增加一张牌
+            Transform parent = selfPlayCardPos1.childCount < 12 ? selfPlayCardPos1 : selfPlayCardPos2;
+            GameObject playCard = Instantiate(_selfPlayCardPrefab, parent);
+            playCard.GetComponent<Image>().sprite = _selfPlayCardMapping[card];
+            playCard.transform.localPosition = new Vector3(parent.childCount * 70, 0);
+
             // 回调controller
             onPlayCard?.Invoke(card);
+        }
+
+        public void OnOtherPlayCard(byte dealerWind, PlayCardEvent data)
+        {
+            SeatPos seat = DealerWindToSeatPos(dealerWind, data.dealerWind);
+            // 判断出牌方位
+
+            if (seat == SeatPos.Opposite)
+            {
+                // 在出牌区添加一张牌
+                Transform parent = oppositePlayCardPos1.childCount < 12
+                    ? oppositePlayCardPos1
+                    : oppositePlayCardPos2;
+                // 对家和本家是共用的出牌prefab
+                GameObject playCard = Instantiate(_selfPlayCardPrefab, parent);
+                playCard.GetComponent<Image>().sprite = _selfPlayCardMapping[data.card];
+                playCard.transform.localPosition = new Vector3(parent.childCount * 70, 0);
+            }
+            else if (seat == SeatPos.Left)
+            {
+                Transform parent = leftPlayCardPos1.childCount < 12 ? leftPlayCardPos1 : leftPlayCardPos2;
+                GameObject playCard = Instantiate(_leftPlayCardPrefab, parent);
+                playCard.GetComponent<Image>().sprite = _leftPlayCardMapping[data.card];
+                playCard.transform.localPosition = new Vector3(0, parent.childCount * -50);
+            }
+            else if (seat == SeatPos.Right)
+            {
+                Transform parent = rightPlayCardPos1.childCount < 12 ? rightPlayCardPos1 : rightPlayCardPos2;
+                GameObject playCard = Instantiate(_rightPlayCardPrefab, parent);
+                playCard.GetComponent<Image>().sprite = _rightPlayCardMapping[data.card];
+                playCard.transform.localPosition = new Vector3(0, parent.childCount * 50);
+                // 下家出牌，先出的牌需要放在最下面以覆盖后出牌的layer，所以每次实例化时把object的索引设为0
+                parent.transform.SetSiblingIndex(0);
+            }
+
+            // 看自己能否碰杠胡，显示对应的菜单
         }
 
         public void OnDealCard(List<byte> handCards)

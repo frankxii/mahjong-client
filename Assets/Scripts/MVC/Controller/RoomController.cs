@@ -36,6 +36,7 @@ namespace MVC.Controller
             NetworkManager.Instance.AddListener(MessageId.Ready, OnReady);
             NetworkManager.Instance.AddListener(MessageId.DealCard, OnDeal);
             NetworkManager.Instance.AddListener(MessageId.DrawCardEvent, OnDrawCard);
+            NetworkManager.Instance.AddListener(MessageId.PlayCardEvent, OnOtherPlayCard);
         }
 
         private void RemoveCallback()
@@ -45,6 +46,7 @@ namespace MVC.Controller
             NetworkManager.Instance.RemoveListener(MessageId.Ready, OnReady);
             NetworkManager.Instance.RemoveListener(MessageId.DealCard, OnDeal);
             NetworkManager.Instance.RemoveListener(MessageId.DrawCardEvent, OnDrawCard);
+            NetworkManager.Instance.RemoveListener(MessageId.PlayCardEvent, OnOtherPlayCard);
         }
 
         public override void Destroy()
@@ -135,6 +137,7 @@ namespace MVC.Controller
             view.OnDrawCard(RoomModel.Instance.DealerWind, data);
         }
 
+        // 本家出牌
         private void OnPlayCard(byte card)
         {
             PlayCardReq req = new()
@@ -144,6 +147,12 @@ namespace MVC.Controller
                 card = card
             };
             NetworkManager.Instance.Send(MessageId.PlayCard, req);
+        }
+
+        // 服务器通知有人出牌
+        private void OnOtherPlayCard(string json)
+        {
+            view.OnOtherPlayCard(RoomModel.Instance.DealerWind, ProtoUtil.Deserialize<PlayCardEvent>(json));
         }
     }
 }
