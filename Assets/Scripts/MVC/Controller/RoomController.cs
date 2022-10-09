@@ -5,7 +5,6 @@ using MVC.Base;
 using MVC.Model;
 using MVC.View;
 using Protocol;
-using UnityEngine;
 
 namespace MVC.Controller
 {
@@ -160,8 +159,21 @@ namespace MVC.Controller
 
         private void OnOperation(string operation)
         {
-            Debug.Log(operation);
+            OperationCode code = operation switch
+            {
+                "peng" => OperationCode.Peng,
+                "gang" => OperationCode.Gang,
+                "hu" => OperationCode.Hu,
+                _ => OperationCode.Pass
+            };
+
             // 通知服务器，玩家执行了对应操作
+            NetworkManager.Instance.Send(MessageId.Operation, new OperationReq()
+            {
+                operationCode = code,
+                dealerWind = RoomModel.Instance.DealerWind,
+                roomId = RoomModel.Instance.RoomId
+            });
         }
     }
 }
