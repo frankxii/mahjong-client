@@ -472,5 +472,29 @@ namespace MVC.View
                     break;
             }
         }
+
+        public void OnOperationEvent(byte dealerWind, OperationEvnet data)
+        {
+            SeatPos seat = DealerWindToSeatPos(dealerWind, data.dealerWind);
+            if (data.operationCode==OperationCode.Peng)
+            {
+                // 生成碰的牌
+                if (seat==SeatPos.Self)
+                {
+                    // 移除手牌
+                    // 可以出牌
+                    canPlayCard = true;
+                }
+                
+            }
+            else if (data.operationCode==OperationCode.Gang)
+            {
+                // 生成杠的牌，等待服务端发牌
+            }
+            else if (data.operationCode==OperationCode.Hu)
+            {
+                    
+            }
+        }
     }
 }

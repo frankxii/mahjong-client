@@ -39,6 +39,7 @@ namespace MVC.Controller
             NetworkManager.Instance.AddListener(MessageId.DealCard, OnDeal);
             NetworkManager.Instance.AddListener(MessageId.DrawCardEvent, OnDrawCard);
             NetworkManager.Instance.AddListener(MessageId.PlayCardEvent, OnOtherPlayCard);
+            NetworkManager.Instance.AddListener(MessageId.OperationEvent, OnOperationEvent);
         }
 
         private void RemoveCallback()
@@ -49,6 +50,7 @@ namespace MVC.Controller
             NetworkManager.Instance.RemoveListener(MessageId.DealCard, OnDeal);
             NetworkManager.Instance.RemoveListener(MessageId.DrawCardEvent, OnDrawCard);
             NetworkManager.Instance.RemoveListener(MessageId.PlayCardEvent, OnOtherPlayCard);
+            NetworkManager.Instance.RemoveListener(MessageId.OperationEvent, OnOperationEvent);
         }
 
         public override void Destroy()
@@ -174,6 +176,12 @@ namespace MVC.Controller
                 dealerWind = RoomModel.Instance.DealerWind,
                 roomId = RoomModel.Instance.RoomId
             });
+        }
+
+        private void OnOperationEvent(string json)
+        {
+            OperationEvnet data = ProtoUtil.Deserialize<OperationEvnet>(json);
+            view.OnOperationEvent(RoomModel.Instance.DealerWind, data);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Protocol
         PlayCard = 1009, // 出牌
         PlayCardEvent = 1010, // 其他玩家出牌事件
         Operation = 1011, // 玩家操作，碰、杠、胡
+        OperationEvent = 1012 // 玩家操作事件
     }
 
     public enum OperationCode
@@ -100,7 +101,7 @@ namespace Protocol
     public class OperationEvnet
     {
         public byte dealerWind;
-        public int operationCode;
+        public OperationCode operationCode;
         public byte operationCard;
     }
 }
