@@ -5,6 +5,7 @@ using MVC.Base;
 using MVC.Model;
 using MVC.View;
 using Protocol;
+using UnityEngine;
 
 namespace MVC.Controller
 {
@@ -27,6 +28,8 @@ namespace MVC.Controller
             view.btnReady.onClick.AddListener(Ready);
             // 绑定出牌事件
             view.onPlayCard += OnPlayCard;
+            // 绑定操作事件
+            view.onOperation += OnOperation;
         }
 
         private void RegisterCallback()
@@ -153,6 +156,12 @@ namespace MVC.Controller
         private void OnOtherPlayCard(string json)
         {
             view.OnOtherPlayCard(RoomModel.Instance.DealerWind, ProtoUtil.Deserialize<PlayCardEvent>(json));
+        }
+
+        private void OnOperation(string operation)
+        {
+            Debug.Log(operation);
+            // 通知服务器，玩家执行了对应操作
         }
     }
 }

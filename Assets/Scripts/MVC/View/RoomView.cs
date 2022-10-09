@@ -25,7 +25,9 @@ namespace MVC.View
         public Image imgDealerWind; // 中控
         public Button btnLeaveRoom; // 离开房间按钮
         public bool canPlayCard;
-        public event Action<byte> onPlayCard;
+
+        public event Action<byte> onPlayCard; // 出牌事件
+        public event Action<string> onOperation; // 操作事件 碰、杠、胡、过 
 
         private Dictionary<byte, Sprite> _selfHandCardMapping = new(); // 本家手牌图片字典
         private Dictionary<byte, Sprite> _selfPlayCardMapping = new(); // 本家出牌图片字典
@@ -332,6 +334,33 @@ namespace MVC.View
             onPlayCard?.Invoke(card);
         }
 
+        /// <summary>
+        /// 展示可操作按钮
+        /// </summary>
+        /// <param name="operationList">可操作按钮字符串列表</param>
+        private void ShowOperationButton(List<string> operationList)
+        {
+            for (int index = 0; index < operationList.Count; index++)
+            {
+                string operation = operationList[index];
+                GameObject peng = Instantiate(_operationButtonPrefab, operationArea);
+                peng.name = operation;
+                peng.GetComponent<Image>().sprite = _operationButtonMapping[operation];
+                peng.transform.localPosition = new Vector3(200 * index, 0);
+                peng.GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    // 移除所有操作按钮
+                    foreach (Transform child in operationArea)
+                    {
+                        Destroy(child.gameObject);
+                    }
+
+                    // 发布操作事件，通知controller
+                    onOperation?.Invoke(operation);
+                });
+            }
+        }
+
         public void OnOtherPlayCard(byte dealerWind, PlayCardEvent data)
         {
             SeatPos seat = DealerWindToSeatPos(dealerWind, data.dealerWind);
@@ -365,7 +394,19 @@ namespace MVC.View
                 parent.transform.SetSiblingIndex(0);
             }
 
-            // 看自己能否碰杠胡，显示对应的菜单
+            // 根据可以操作的情况，生成操作列表，展示对应操作按钮
+            List<string> operationList = new();
+            if (data.canPeng)
+                operationList.Add("peng");
+
+            if (data.canGang)
+                operationList.Add("gang");
+
+            if (data.canHu)
+                operationList.Add("hu");
+
+            operationList.Add("pass");
+            ShowOperationButton(operationList);
         }
 
         public void OnDealCard(List<byte> handCards)

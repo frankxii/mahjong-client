@@ -14,6 +14,7 @@ namespace Protocol
         DrawCardEvent = 1008, // 摸牌
         PlayCard = 1009, // 出牌
         PlayCardEvent=1010, // 其他玩家出牌事件
+        Operation=1011, // 玩家操作，碰、杠、胡
     }
 
     public class Response<T>
