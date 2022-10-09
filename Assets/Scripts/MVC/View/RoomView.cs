@@ -31,6 +31,8 @@ namespace MVC.View
         private Dictionary<byte, Sprite> _selfPlayCardMapping = new(); // 本家出牌图片字典
         private Dictionary<byte, Sprite> _leftPlayCardMapping = new(); // 上家出牌图片字典
         private Dictionary<byte, Sprite> _rightPlayCardMapping = new(); // 下家出牌图片字典
+        private Dictionary<string, Sprite> _operationButtonMapping = new(); // 操作按钮图片字典
+
         private GameObject _selfHandCardPrefab; // 本家手牌prefab
         private GameObject _oppositeHandCardPrefab; // 对家手牌prefab
         private GameObject _leftHandCardPrefab; // 上家手牌prefab
@@ -38,6 +40,7 @@ namespace MVC.View
         private GameObject _selfPlayCardPrefab; // 本家出牌prefab
         private GameObject _leftPlayCardPrefab; // 上家出牌prefab
         private GameObject _rightPlayCardPrefab; // 下家出牌prefab
+        private GameObject _operationButtonPrefab; // 操作按钮prefab
 
         [Header("东南西北图片")]
         public Sprite eastWind;
@@ -73,6 +76,7 @@ namespace MVC.View
         public Text txtSelfCoinNumber; // 金币
         public Transform selfHandCardPos; // 手牌初始挂载位置
         public Transform selfDrawCardPos; // 摸牌挂载位置
+        public Transform operationArea; // 操作按钮挂载位置
 
         [Header("对家")]
         public Image imgOppositeAvatar;
@@ -116,6 +120,12 @@ namespace MVC.View
                 }
             }
 
+            // 加载操作按钮图片
+            foreach (Sprite sprite in Resources.LoadAll<Sprite>("Art/OperationButton"))
+            {
+                _operationButtonMapping.Add(sprite.name, sprite);
+            }
+
             // 加载手牌prefab
             _selfHandCardPrefab = Resources.Load<GameObject>("Card/SelfHandCardPrefab");
             _oppositeHandCardPrefab = Resources.Load<GameObject>("Card/OppositeHandCardPrefab");
@@ -125,6 +135,8 @@ namespace MVC.View
             _selfPlayCardPrefab = Resources.Load<GameObject>("Card/SelfPlayCardPrefab");
             _leftPlayCardPrefab = Resources.Load<GameObject>("Card/LeftPlayCardPrefab");
             _rightPlayCardPrefab = Resources.Load<GameObject>("Card/RightPlayCardPrefab");
+            // 加载操作按钮prefab
+            _operationButtonPrefab = Resources.Load<GameObject>("UI/OperationButtonPrefab");
         }
 
         // 通过本家门风和玩家门风，来判断玩家位置是本家、对家、上家、下家
