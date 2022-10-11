@@ -79,6 +79,7 @@ namespace MVC.View
         public Transform selfHandCardPos; // 手牌初始挂载位置
         public Transform selfDrawCardPos; // 摸牌挂载位置
         public Transform operationArea; // 操作按钮挂载位置
+        public Transform selfExtraCardPos; // 碰、杠牌放置区域
 
         [Header("对家")]
         public Image imgOppositeAvatar;
@@ -86,6 +87,7 @@ namespace MVC.View
         public Text txtOppositeCoinNumber;
         public Transform oppositeHandCardPos;
         public Transform oppositeDrawCardPos;
+        public Transform oppositeExtraCardPos;
 
         [Header("上家")]
         public Image imgLeftAvatar;
@@ -93,6 +95,7 @@ namespace MVC.View
         public Text txtLeftCoinNumber;
         public Transform leftHandCardPos;
         public Transform leftDrawCardPos;
+        public Transform leftExtraCardPos;
 
         [Header("下家")]
         public Image imgRightAvatar;
@@ -100,6 +103,7 @@ namespace MVC.View
         public Text txtRightCoinNumber;
         public Transform rightHandCardPos;
         public Transform rightDrawCardPos;
+        public Transform rightExtraCardPos;
 
 
         private void Start()
@@ -476,24 +480,120 @@ namespace MVC.View
         public void OnOperationEvent(byte dealerWind, OperationEvnet data)
         {
             SeatPos seat = DealerWindToSeatPos(dealerWind, data.dealerWind);
-            if (data.operationCode==OperationCode.Peng)
+            if (data.operationCode == OperationCode.Peng)
             {
                 // 生成碰的牌
-                if (seat==SeatPos.Self)
+                if (seat == SeatPos.Self)
                 {
+                    int count = 2;
                     // 移除手牌
+                    foreach (Transform child in selfHandCardPos)
+                    {
+                        byte card = child.gameObject.GetComponent<HandCard>().card;
+                        if (count != 0 && card == data.operationCard)
+                        {
+                            Destroy(child.gameObject);
+                            count -= 1;
+                        }
+
+                        if (count == 0)
+                        {
+                            // 碰的牌已移除，剩下的牌移动两格
+                            child.localPosition += new Vector3(230, 0);
+                        }
+                    }
+
+                    // 操作区生成碰的牌
+                    // 寻找空闲的碰、杠牌区域
+                    foreach (Transform child in selfExtraCardPos)
+                    {
+                        if (child.childCount == 0)
+                        {
+                            // 生成碰的牌并排序
+                            for (int i = 0; i < 3; i++)
+                            {
+                                GameObject cardObject = Instantiate(_selfPlayCardPrefab, child);
+                                cardObject.transform.localPosition += 115 * Vector3.right;
+                            }
+
+                            break;
+                        }
+                    }
+
                     // 可以出牌
                     canPlayCard = true;
                 }
-                
+                else if (seat == SeatPos.Opposite)
+                {
+                    int count = oppositeHandCardPos.childCount;
+                    // 移除对家手牌
+                    Destroy(oppositeHandCardPos.GetChild(count - 1).gameObject);
+                    Destroy(oppositeHandCardPos.GetChild(count - 2).gameObject);
+                    foreach (Transform child in oppositeExtraCardPos)
+                    {
+                        if (child.childCount == 0)
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                GameObject cardObject = Instantiate(_selfPlayCardPrefab, child);
+                                cardObject.transform.localPosition = new Vector3(115 * i, 0);
+                            }
+
+                            break;
+                        }
+                    }
+                    // 生成对家碰的牌
+                }
+                else if (seat == SeatPos.Left)
+                {
+                    // 移除上家手牌
+                    int count = leftHandCardPos.childCount;
+                    Destroy(leftHandCardPos.GetChild(count - 1).gameObject);
+                    Destroy(leftHandCardPos.GetChild(count - 2).gameObject);
+                    // 生成上家碰的牌
+                    foreach (Transform child in leftExtraCardPos)
+                    {
+                        if (child.childCount == 0)
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                GameObject cardObject = Instantiate(_leftPlayCardPrefab, child);
+                                cardObject.transform.localPosition = new Vector3(50 * i, 0);
+                            }
+
+                            break;
+                        }
+                    }
+                }
+                else if (seat == SeatPos.Right)
+                {
+                    // 移除下家手牌
+                    int count = rightHandCardPos.childCount;
+                    Destroy(rightHandCardPos.GetChild(count - 1));
+                    Destroy(rightHandCardPos.GetChild(count - 2));
+                    // 生成下家碰的牌
+                    foreach (Transform child in rightExtraCardPos)
+                    {
+                        if (child.childCount == 0)
+                        {
+                            for (int i = 0; i < 3; i++)
+                            {
+                                GameObject cardObject = Instantiate(_rightPlayCardPrefab, child);
+                                cardObject.transform.localPosition = new Vector3(50 * i, 0);
+                                cardObject.transform.SetSiblingIndex(0);
+                            }
+
+                            break;
+                        }
+                    }
+                }
             }
-            else if (data.operationCode==OperationCode.Gang)
+            else if (data.operationCode == OperationCode.Gang)
             {
                 // 生成杠的牌，等待服务端发牌
             }
-            else if (data.operationCode==OperationCode.Hu)
+            else if (data.operationCode == OperationCode.Hu)
             {
-                    
             }
         }
     }
