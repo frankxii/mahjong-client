@@ -477,6 +477,17 @@ namespace MVC.View
             }
         }
 
+        private Transform GetFreeExtraCardArea(Transform extraCardPos)
+        {
+            foreach (Transform area in extraCardPos)
+            {
+                if (area.childCount == 0)
+                    return area;
+            }
+
+            throw new Exception("未找到空闲的卡牌区域");
+        }
+
         public void OnOperationEvent(byte dealerWind, OperationEvnet data)
         {
             SeatPos seat = DealerWindToSeatPos(dealerWind, data.dealerWind);
@@ -505,19 +516,12 @@ namespace MVC.View
 
                     // 操作区生成碰的牌
                     // 寻找空闲的碰、杠牌区域
-                    foreach (Transform child in selfExtraCardPos)
+                    Transform freeCardArea = GetFreeExtraCardArea(selfExtraCardPos);
+                    // 生成碰的牌并排序
+                    for (int i = 0; i < 3; i++)
                     {
-                        if (child.childCount == 0)
-                        {
-                            // 生成碰的牌并排序
-                            for (int i = 0; i < 3; i++)
-                            {
-                                GameObject cardObject = Instantiate(_selfPlayCardPrefab, child);
-                                cardObject.transform.localPosition += 115 * Vector3.right;
-                            }
-
-                            break;
-                        }
+                        GameObject cardObject = Instantiate(_selfPlayCardPrefab, freeCardArea);
+                        cardObject.transform.localPosition += 115 * Vector3.right;
                     }
 
                     // 可以出牌
@@ -529,20 +533,13 @@ namespace MVC.View
                     // 移除对家手牌
                     Destroy(oppositeHandCardPos.GetChild(count - 1).gameObject);
                     Destroy(oppositeHandCardPos.GetChild(count - 2).gameObject);
-                    foreach (Transform child in oppositeExtraCardPos)
-                    {
-                        if (child.childCount == 0)
-                        {
-                            for (int i = 0; i < 3; i++)
-                            {
-                                GameObject cardObject = Instantiate(_selfPlayCardPrefab, child);
-                                cardObject.transform.localPosition = new Vector3(115 * i, 0);
-                            }
-
-                            break;
-                        }
-                    }
+                    Transform freeCardArea = GetFreeExtraCardArea(oppositeExtraCardPos);
                     // 生成对家碰的牌
+                    for (int i = 0; i < 3; i++)
+                    {
+                        GameObject cardObject = Instantiate(_selfPlayCardPrefab, freeCardArea);
+                        cardObject.transform.localPosition = new Vector3(115 * i, 0);
+                    }
                 }
                 else if (seat == SeatPos.Left)
                 {
@@ -551,18 +548,11 @@ namespace MVC.View
                     Destroy(leftHandCardPos.GetChild(count - 1).gameObject);
                     Destroy(leftHandCardPos.GetChild(count - 2).gameObject);
                     // 生成上家碰的牌
-                    foreach (Transform child in leftExtraCardPos)
+                    Transform freeCardArea = GetFreeExtraCardArea(leftExtraCardPos);
+                    for (int i = 0; i < 3; i++)
                     {
-                        if (child.childCount == 0)
-                        {
-                            for (int i = 0; i < 3; i++)
-                            {
-                                GameObject cardObject = Instantiate(_leftPlayCardPrefab, child);
-                                cardObject.transform.localPosition = new Vector3(50 * i, 0);
-                            }
-
-                            break;
-                        }
+                        GameObject cardObject = Instantiate(_leftPlayCardPrefab, freeCardArea);
+                        cardObject.transform.localPosition = new Vector3(50 * i, 0);
                     }
                 }
                 else if (seat == SeatPos.Right)
@@ -572,19 +562,12 @@ namespace MVC.View
                     Destroy(rightHandCardPos.GetChild(count - 1));
                     Destroy(rightHandCardPos.GetChild(count - 2));
                     // 生成下家碰的牌
-                    foreach (Transform child in rightExtraCardPos)
+                    Transform freeCardArea = GetFreeExtraCardArea(rightExtraCardPos);
+                    for (int i = 0; i < 3; i++)
                     {
-                        if (child.childCount == 0)
-                        {
-                            for (int i = 0; i < 3; i++)
-                            {
-                                GameObject cardObject = Instantiate(_rightPlayCardPrefab, child);
-                                cardObject.transform.localPosition = new Vector3(50 * i, 0);
-                                cardObject.transform.SetSiblingIndex(0);
-                            }
-
-                            break;
-                        }
+                        GameObject cardObject = Instantiate(_rightPlayCardPrefab, freeCardArea);
+                        cardObject.transform.localPosition = new Vector3(50 * i, 0);
+                        cardObject.transform.SetSiblingIndex(0);
                     }
                 }
             }
@@ -612,19 +595,12 @@ namespace MVC.View
 
                     // 操作区生成杠的牌
                     // 寻找空闲的碰、杠牌区域
-                    foreach (Transform child in selfExtraCardPos)
+                    Transform freeCardArea = GetFreeExtraCardArea(selfExtraCardPos);
+                    // 生成杠的牌并排序
+                    for (int i = 0; i < 3; i++)
                     {
-                        if (child.childCount == 0)
-                        {
-                            // 生成杠的牌并排序
-                            for (int i = 0; i < 3; i++)
-                            {
-                                GameObject cardObject = Instantiate(_selfPlayCardPrefab, child);
-                                cardObject.transform.localPosition += 115 * Vector3.right;
-                            }
-
-                            break;
-                        }
+                        GameObject cardObject = Instantiate(_selfPlayCardPrefab, freeCardArea);
+                        cardObject.transform.localPosition += 115 * Vector3.right;
                     }
                 }
                 else if (seat == SeatPos.Opposite)
@@ -634,18 +610,11 @@ namespace MVC.View
                     Destroy(oppositeHandCardPos.GetChild(count - 1).gameObject);
                     Destroy(oppositeHandCardPos.GetChild(count - 2).gameObject);
                     Destroy(oppositeHandCardPos.GetChild(count - 3).gameObject);
-                    foreach (Transform child in oppositeExtraCardPos)
+                    Transform freeCardArea = GetFreeExtraCardArea(oppositeExtraCardPos);
+                    for (int i = 0; i < 3; i++)
                     {
-                        if (child.childCount == 0)
-                        {
-                            for (int i = 0; i < 3; i++)
-                            {
-                                GameObject cardObject = Instantiate(_selfPlayCardPrefab, child);
-                                cardObject.transform.localPosition = new Vector3(115 * i, 0);
-                            }
-
-                            break;
-                        }
+                        GameObject cardObject = Instantiate(_selfPlayCardPrefab, freeCardArea);
+                        cardObject.transform.localPosition = new Vector3(115 * i, 0);
                     }
                     // 生成对家碰的牌
                 }
@@ -657,18 +626,11 @@ namespace MVC.View
                     Destroy(leftHandCardPos.GetChild(count - 2).gameObject);
                     Destroy(leftHandCardPos.GetChild(count - 3).gameObject);
                     // 生成上家碰的牌
-                    foreach (Transform child in leftExtraCardPos)
+                    Transform freeCardArea = GetFreeExtraCardArea(leftExtraCardPos);
+                    for (int i = 0; i < 3; i++)
                     {
-                        if (child.childCount == 0)
-                        {
-                            for (int i = 0; i < 3; i++)
-                            {
-                                GameObject cardObject = Instantiate(_leftPlayCardPrefab, child);
-                                cardObject.transform.localPosition = new Vector3(50 * i, 0);
-                            }
-
-                            break;
-                        }
+                        GameObject cardObject = Instantiate(_leftPlayCardPrefab, freeCardArea);
+                        cardObject.transform.localPosition = new Vector3(50 * i, 0);
                     }
                 }
                 else if (seat == SeatPos.Right)
@@ -679,19 +641,12 @@ namespace MVC.View
                     Destroy(rightHandCardPos.GetChild(count - 2));
                     Destroy(rightHandCardPos.GetChild(count - 3));
                     // 生成下家碰的牌
-                    foreach (Transform child in rightExtraCardPos)
+                    Transform freeCardArea = GetFreeExtraCardArea(rightExtraCardPos);
+                    for (int i = 0; i < 3; i++)
                     {
-                        if (child.childCount == 0)
-                        {
-                            for (int i = 0; i < 3; i++)
-                            {
-                                GameObject cardObject = Instantiate(_rightPlayCardPrefab, child);
-                                cardObject.transform.localPosition = new Vector3(50 * i, 0);
-                                cardObject.transform.SetSiblingIndex(0);
-                            }
-
-                            break;
-                        }
+                        GameObject cardObject = Instantiate(_rightPlayCardPrefab, freeCardArea);
+                        cardObject.transform.localPosition = new Vector3(50 * i, 0);
+                        cardObject.transform.SetSiblingIndex(0);
                     }
                 }
             }
