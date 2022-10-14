@@ -38,7 +38,7 @@ namespace MVC.Controller
             NetworkManager.Instance.AddListener(MessageId.Ready, OnReady);
             NetworkManager.Instance.AddListener(MessageId.DealCard, OnDeal);
             NetworkManager.Instance.AddListener(MessageId.DrawCardEvent, OnDrawCard);
-            NetworkManager.Instance.AddListener(MessageId.PlayCardEvent, OnOtherPlayCard);
+            NetworkManager.Instance.AddListener(MessageId.PlayCardEvent, OnPlayCardEvent);
             NetworkManager.Instance.AddListener(MessageId.OperationEvent, OnOperationEvent);
         }
 
@@ -49,7 +49,7 @@ namespace MVC.Controller
             NetworkManager.Instance.RemoveListener(MessageId.Ready, OnReady);
             NetworkManager.Instance.RemoveListener(MessageId.DealCard, OnDeal);
             NetworkManager.Instance.RemoveListener(MessageId.DrawCardEvent, OnDrawCard);
-            NetworkManager.Instance.RemoveListener(MessageId.PlayCardEvent, OnOtherPlayCard);
+            NetworkManager.Instance.RemoveListener(MessageId.PlayCardEvent, OnPlayCardEvent);
             NetworkManager.Instance.RemoveListener(MessageId.OperationEvent, OnOperationEvent);
         }
 
@@ -154,9 +154,9 @@ namespace MVC.Controller
         }
 
         // 服务器通知有人出牌
-        private void OnOtherPlayCard(string json)
+        private void OnPlayCardEvent(string json)
         {
-            view.OnOtherPlayCard(RoomModel.Instance.DealerWind, ProtoUtil.Deserialize<PlayCardEvent>(json));
+            view.OnPlayCardEvent(RoomModel.Instance.DealerWind, ProtoUtil.Deserialize<PlayCardEvent>(json));
         }
 
         private void OnOperation(string operation)

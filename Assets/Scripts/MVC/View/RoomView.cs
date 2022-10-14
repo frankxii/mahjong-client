@@ -217,14 +217,14 @@ namespace MVC.View
             // 设置门风
             imgDealerWind.sprite = dealerWind switch
             {
-                1 => eastWind,
-                2 => southWind,
-                3 => westWind,
+                0 => eastWind,
+                1 => southWind,
+                2 => westWind,
                 _ => northWind
             };
             foreach (PlayerInfo player in players)
             {
-                // 东南西北门风的值为1234，通过玩家门风与本家的差值，来判断每个玩家所在的位置
+                // 东南西北门风的值为0123，通过玩家门风与本家的差值，来判断每个玩家所在的位置
                 SeatPos seat = DealerWindToSeatPos(dealerWind, player.dealerWind);
                 switch (seat)
                 {
@@ -365,7 +365,7 @@ namespace MVC.View
             }
         }
 
-        public void OnOtherPlayCard(byte dealerWind, PlayCardEvent data)
+        public void OnPlayCardEvent(byte dealerWind, PlayCardEvent data)
         {
             SeatPos seat = DealerWindToSeatPos(dealerWind, data.dealerWind);
             // 判断出牌方位
@@ -408,9 +408,13 @@ namespace MVC.View
 
             if (data.canHu)
                 operationList.Add("hu");
-
-            operationList.Add("pass");
-            ShowOperationButton(operationList);
+            
+            // 可操作不为空时才展示操作按钮
+            if (operationList.Count != 0)
+            {
+                operationList.Add("pass");
+                ShowOperationButton(operationList);
+            }
         }
 
         public void OnDealCard(List<byte> handCards)
