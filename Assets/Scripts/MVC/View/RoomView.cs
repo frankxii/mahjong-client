@@ -23,6 +23,7 @@ namespace MVC.View
         public Text txtRoomId; // 房间ID
         public Text txtCycle; // 当前圈数
         public Image imgDealerWind; // 中控
+        public GameObject playCardTip; // 出牌提示消息
         public Button btnLeaveRoom; // 离开房间按钮
         public bool canPlayCard;
 
@@ -143,6 +144,14 @@ namespace MVC.View
             _rightPlayCardPrefab = Resources.Load<GameObject>("Card/RightPlayCardPrefab");
             // 加载操作按钮prefab
             _operationButtonPrefab = Resources.Load<GameObject>("UI/OperationButtonPrefab");
+        }
+
+        private void Update()
+        {
+            if (canPlayCard)
+                playCardTip.SetActive(true);
+            else
+                playCardTip.SetActive(false);
         }
 
         // 通过本家门风和玩家门风，来判断玩家位置是本家、对家、上家、下家
