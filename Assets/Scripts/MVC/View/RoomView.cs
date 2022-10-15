@@ -24,6 +24,7 @@ namespace MVC.View
         public Text txtCycle; // 当前圈数
         public Image imgDealerWind; // 中控
         public GameObject playCardTip; // 出牌提示消息
+        public GameObject playCardArrow; // 出牌提示箭头
         public Button btnLeaveRoom; // 离开房间按钮
         public bool canPlayCard;
 
@@ -342,6 +343,10 @@ namespace MVC.View
             GameObject playCard = Instantiate(_selfPlayCardPrefab, parent);
             playCard.GetComponent<Image>().sprite = _selfPlayCardMapping[card];
             playCard.transform.localPosition = new Vector3(parent.childCount * 70, 0);
+            // 添加出牌指示箭头
+            playCardArrow.SetActive(true);
+            playCardArrow.transform.SetParent(playCard.transform);
+            playCardArrow.transform.localPosition=Vector3.zero;
 
             // 回调controller
             onPlayCard?.Invoke(card);
@@ -389,6 +394,10 @@ namespace MVC.View
                 GameObject playCard = Instantiate(_selfPlayCardPrefab, parent);
                 playCard.GetComponent<Image>().sprite = _selfPlayCardMapping[data.card];
                 playCard.transform.localPosition = new Vector3(parent.childCount * 70, 0);
+                // 添加出牌指示箭头
+                playCardArrow.SetActive(true);
+                playCardArrow.transform.SetParent(playCard.transform);
+                playCardArrow.transform.localPosition=Vector3.zero;
             }
             else if (seat == SeatPos.Left)
             {
@@ -396,6 +405,10 @@ namespace MVC.View
                 GameObject playCard = Instantiate(_leftPlayCardPrefab, parent);
                 playCard.GetComponent<Image>().sprite = _leftPlayCardMapping[data.card];
                 playCard.transform.localPosition = new Vector3(0, parent.childCount * -50);
+                // 添加出牌指示箭头
+                playCardArrow.SetActive(true);
+                playCardArrow.transform.SetParent(playCard.transform);
+                playCardArrow.transform.localPosition=Vector3.zero;
             }
             else if (seat == SeatPos.Right)
             {
@@ -405,6 +418,10 @@ namespace MVC.View
                 playCard.transform.localPosition = new Vector3(0, parent.childCount * 50);
                 // 下家出牌，先出的牌需要放在最下面以覆盖后出牌的layer，所以每次实例化时把object的索引设为0
                 parent.transform.SetSiblingIndex(0);
+                // 添加出牌指示箭头
+                playCardArrow.SetActive(true);
+                playCardArrow.transform.SetParent(playCard.transform);
+                playCardArrow.transform.localPosition=Vector3.zero;
             }
 
             // 根据可以操作的情况，生成操作列表，展示对应操作按钮
