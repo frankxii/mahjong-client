@@ -466,6 +466,8 @@ namespace MVC.View
 
         public void OnDrawCard(byte dealerWind, DrawCardEvent data)
         {
+            // 更新剩余牌数
+            txtRemainCard.text = data.remainCards.ToString();
             // 判断摸牌玩家位置
             SeatPos seat = DealerWindToSeatPos(dealerWind, data.dealerWind);
             switch (seat)

@@ -36,7 +36,7 @@ namespace MVC.Controller
             NetworkManager.Instance.AddListener(MessageId.UpdatePlayer, OnUpdatePlayer);
             NetworkManager.Instance.AddListener(MessageId.LeaveRoom, OnLeaveRoom);
             NetworkManager.Instance.AddListener(MessageId.Ready, OnReady);
-            NetworkManager.Instance.AddListener(MessageId.DealCard, OnDeal);
+            NetworkManager.Instance.AddListener(MessageId.DealCard, OnDealCard);
             NetworkManager.Instance.AddListener(MessageId.DrawCardEvent, OnDrawCard);
             NetworkManager.Instance.AddListener(MessageId.PlayCardEvent, OnPlayCardEvent);
             NetworkManager.Instance.AddListener(MessageId.OperationEvent, OnOperationEvent);
@@ -47,7 +47,7 @@ namespace MVC.Controller
             NetworkManager.Instance.RemoveListener(MessageId.UpdatePlayer, OnUpdatePlayer);
             NetworkManager.Instance.RemoveListener(MessageId.LeaveRoom, OnLeaveRoom);
             NetworkManager.Instance.RemoveListener(MessageId.Ready, OnReady);
-            NetworkManager.Instance.RemoveListener(MessageId.DealCard, OnDeal);
+            NetworkManager.Instance.RemoveListener(MessageId.DealCard, OnDealCard);
             NetworkManager.Instance.RemoveListener(MessageId.DrawCardEvent, OnDrawCard);
             NetworkManager.Instance.RemoveListener(MessageId.PlayCardEvent, OnPlayCardEvent);
             NetworkManager.Instance.RemoveListener(MessageId.OperationEvent, OnOperationEvent);
@@ -108,7 +108,7 @@ namespace MVC.Controller
         }
 
         // 发牌回调
-        private async void OnDeal(string json)
+        private async void OnDealCard(string json)
         {
             List<byte> handCards = ProtoUtil.Deserialize<List<byte>>(json);
 
@@ -131,6 +131,7 @@ namespace MVC.Controller
                 roomId = RoomModel.Instance.RoomId
             });
             // 更新房间剩余牌数
+            view.txtRemainCard.text = "56";
         }
 
         // 摸牌

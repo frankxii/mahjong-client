@@ -73,6 +73,7 @@ namespace Protocol
     {
         public byte dealerWind;
         public byte card = 0;
+        public int remainCards;
     }
 
     public class PlayCardReq
