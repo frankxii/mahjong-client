@@ -408,7 +408,7 @@ namespace MVC.View
 
             if (data.canHu)
                 operationList.Add("hu");
-            
+
             // 可操作不为空时才展示操作按钮
             if (operationList.Count != 0)
             {
@@ -525,7 +525,8 @@ namespace MVC.View
                     for (int i = 0; i < 3; i++)
                     {
                         GameObject cardObject = Instantiate(_selfPlayCardPrefab, freeCardArea);
-                        cardObject.transform.localPosition += 115 * Vector3.right;
+                        cardObject.GetComponent<Image>().sprite = _selfPlayCardMapping[data.operationCard];
+                        cardObject.transform.localPosition = new Vector3(71 * i, 0);
                     }
 
                     // 可以出牌
@@ -533,8 +534,8 @@ namespace MVC.View
                 }
                 else if (seat == SeatPos.Opposite)
                 {
-                    int count = oppositeHandCardPos.childCount;
                     // 移除对家手牌
+                    int count = oppositeHandCardPos.childCount;
                     Destroy(oppositeHandCardPos.GetChild(count - 1).gameObject);
                     Destroy(oppositeHandCardPos.GetChild(count - 2).gameObject);
                     Transform freeCardArea = GetFreeExtraCardArea(oppositeExtraCardPos);
@@ -542,7 +543,8 @@ namespace MVC.View
                     for (int i = 0; i < 3; i++)
                     {
                         GameObject cardObject = Instantiate(_selfPlayCardPrefab, freeCardArea);
-                        cardObject.transform.localPosition = new Vector3(115 * i, 0);
+                        cardObject.GetComponent<Image>().sprite = _selfPlayCardMapping[data.operationCard];
+                        cardObject.transform.localPosition = new Vector3(71 * i, 0);
                     }
                 }
                 else if (seat == SeatPos.Left)
@@ -556,7 +558,8 @@ namespace MVC.View
                     for (int i = 0; i < 3; i++)
                     {
                         GameObject cardObject = Instantiate(_leftPlayCardPrefab, freeCardArea);
-                        cardObject.transform.localPosition = new Vector3(50 * i, 0);
+                        cardObject.GetComponent<Image>().sprite = _leftPlayCardMapping[data.operationCard];
+                        cardObject.transform.localPosition = new Vector3(0, -50 * i);
                     }
                 }
                 else if (seat == SeatPos.Right)
@@ -570,7 +573,8 @@ namespace MVC.View
                     for (int i = 0; i < 3; i++)
                     {
                         GameObject cardObject = Instantiate(_rightPlayCardPrefab, freeCardArea);
-                        cardObject.transform.localPosition = new Vector3(50 * i, 0);
+                        cardObject.GetComponent<Image>().sprite = _rightPlayCardMapping[data.operationCard];
+                        cardObject.transform.localPosition = new Vector3(0, 50 * i);
                         cardObject.transform.SetSiblingIndex(0);
                     }
                 }
