@@ -346,7 +346,7 @@ namespace MVC.View
             // 添加出牌指示箭头
             playCardArrow.SetActive(true);
             playCardArrow.transform.SetParent(playCard.transform);
-            playCardArrow.transform.localPosition=Vector3.zero;
+            playCardArrow.transform.localPosition = Vector3.zero;
 
             // 回调controller
             onPlayCard?.Invoke(card);
@@ -397,7 +397,21 @@ namespace MVC.View
                 // 添加出牌指示箭头
                 playCardArrow.SetActive(true);
                 playCardArrow.transform.SetParent(playCard.transform);
-                playCardArrow.transform.localPosition=Vector3.zero;
+                playCardArrow.transform.localPosition = Vector3.zero;
+                // 调整手牌
+                foreach (Transform child in oppositeDrawCardPos)
+                {
+                    Destroy(child.gameObject);
+                }
+
+                int count = oppositeHandCardPos.childCount;
+                while (count != data.remainHandCard)
+                {
+                    // 生成对家手牌，设定位置
+                    GameObject cardObject = Instantiate(_oppositeHandCardPrefab, oppositeHandCardPos);
+                    cardObject.transform.localPosition = new Vector3(70 * count, 0);
+                    count++;
+                }
             }
             else if (seat == SeatPos.Left)
             {
@@ -408,7 +422,21 @@ namespace MVC.View
                 // 添加出牌指示箭头
                 playCardArrow.SetActive(true);
                 playCardArrow.transform.SetParent(playCard.transform);
-                playCardArrow.transform.localPosition=Vector3.zero;
+                playCardArrow.transform.localPosition = Vector3.zero;
+                // 调整手牌
+                foreach (Transform child in leftHandCardPos)
+                {
+                    Destroy(child.gameObject);
+                }
+
+                int count = leftHandCardPos.childCount;
+                while (count != data.remainHandCard)
+                {
+                    // 生成上家手牌，设定位置
+                    GameObject cardObject = Instantiate(_leftHandCardPrefab, leftHandCardPos);
+                    cardObject.transform.localPosition = new Vector3(0, -40 * count);
+                    count++;
+                }
             }
             else if (seat == SeatPos.Right)
             {
@@ -421,7 +449,21 @@ namespace MVC.View
                 // 添加出牌指示箭头
                 playCardArrow.SetActive(true);
                 playCardArrow.transform.SetParent(playCard.transform);
-                playCardArrow.transform.localPosition=Vector3.zero;
+                playCardArrow.transform.localPosition = Vector3.zero;
+                // 调整手牌
+                foreach (Transform child in rightHandCardPos)
+                {
+                    Destroy(child.gameObject);
+                }
+
+                int count = rightHandCardPos.childCount;
+                while (count != data.remainHandCard)
+                {
+                    // 生成上家手牌，设定位置
+                    GameObject cardObject = Instantiate(_rightHandCardPrefab, rightHandCardPos);
+                    cardObject.transform.localPosition = new Vector3(0, -40 * count);
+                    count++;
+                }
             }
 
             // 根据可以操作的情况，生成操作列表，展示对应操作按钮
@@ -448,30 +490,24 @@ namespace MVC.View
             ShowHandCards(handCards);
 
             // 初始化对家手牌
-            int offset = 0;
             for (int i = 0; i < 13; i++)
             {
                 GameObject cardObject = Instantiate(_oppositeHandCardPrefab, oppositeHandCardPos);
-                cardObject.transform.localPosition += offset * Vector3.right;
-                offset += 70;
+                cardObject.transform.localPosition = new Vector3(70 * i, 0);
             }
 
             // 初始化上家手牌
-            offset = 0;
             for (int i = 0; i < 13; i++)
             {
                 GameObject cardObject = Instantiate(_leftHandCardPrefab, leftHandCardPos);
-                cardObject.transform.localPosition += offset * Vector3.down;
-                offset += 40;
+                cardObject.transform.localPosition = new Vector3(0, -40 * i);
             }
 
             // 初始化下家手牌
-            offset = 0;
             for (int i = 0; i < 13; i++)
             {
                 GameObject cardObject = Instantiate(_rightHandCardPrefab, rightHandCardPos);
-                cardObject.transform.localPosition += offset * Vector3.down;
-                offset += 40;
+                cardObject.transform.localPosition = new Vector3(0, -40 * i);
             }
         }
 

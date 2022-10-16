@@ -87,6 +87,7 @@ namespace Protocol
     {
         public byte dealerWind;
         public byte card;
+        public int remainHandCard;
         public bool canPeng;
         public bool canGang;
         public bool canHu;
