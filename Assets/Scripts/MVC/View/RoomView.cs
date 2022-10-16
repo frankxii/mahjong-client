@@ -679,9 +679,9 @@ namespace MVC.View
                         cardObject.GetComponent<Image>().sprite = _selfPlayCardMapping[data.operationCard];
                         // 前三个按顺序牌，最后一个放中间
                         if (i != 3)
-                            cardObject.transform.localPosition += 115 * Vector3.right;
+                            cardObject.transform.localPosition = new Vector3(i * 71, 0);
                         else
-                            cardObject.transform.localPosition = new Vector3(230, 30);
+                            cardObject.transform.localPosition = new Vector3(71, 30);
                     }
                 }
                 else if (seat == SeatPos.Opposite)
@@ -699,9 +699,9 @@ namespace MVC.View
                         cardObject.GetComponent<Image>().sprite = _selfPlayCardMapping[data.operationCard];
                         // 前三个按顺序牌，最后一个放中间
                         if (i != 3)
-                            cardObject.transform.localPosition += 115 * Vector3.right;
+                            cardObject.transform.localPosition = new Vector3(i * 71, 0);
                         else
-                            cardObject.transform.localPosition = new Vector3(230, 30);
+                            cardObject.transform.localPosition = new Vector3(71, 30);
                     }
                 }
                 else if (seat == SeatPos.Left)
