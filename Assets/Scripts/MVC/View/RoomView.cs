@@ -568,17 +568,19 @@ namespace MVC.View
                     // 移除手牌
                     foreach (Transform child in selfHandCardPos)
                     {
-                        byte card = child.gameObject.GetComponent<HandCard>().card;
-                        if (count != 0 && card == data.operationCard)
-                        {
-                            Destroy(child.gameObject);
-                            count -= 1;
-                        }
-
                         if (count == 0)
                         {
                             // 碰的牌已移除，剩下的牌移动两格
                             child.localPosition += new Vector3(115 * 2, 0);
+                        }
+                        else
+                        {
+                            byte card = child.gameObject.GetComponent<HandCard>().card;
+                            if (card == data.operationCard)
+                            {
+                                Destroy(child.gameObject);
+                                count -= 1;
+                            }
                         }
                     }
 
@@ -630,8 +632,8 @@ namespace MVC.View
                 {
                     // 移除下家手牌
                     int count = rightHandCardPos.childCount;
-                    Destroy(rightHandCardPos.GetChild(count - 1));
-                    Destroy(rightHandCardPos.GetChild(count - 2));
+                    Destroy(rightHandCardPos.GetChild(count - 1).gameObject);
+                    Destroy(rightHandCardPos.GetChild(count - 2).gameObject);
                     // 生成下家碰的牌
                     Transform freeCardArea = GetFreeExtraCardArea(rightExtraCardPos);
                     for (int i = 0; i < 3; i++)
@@ -709,9 +711,9 @@ namespace MVC.View
                 {
                     // 移除下家手牌
                     int count = rightHandCardPos.childCount;
-                    Destroy(rightHandCardPos.GetChild(count - 1));
-                    Destroy(rightHandCardPos.GetChild(count - 2));
-                    Destroy(rightHandCardPos.GetChild(count - 3));
+                    Destroy(rightHandCardPos.GetChild(count - 1).gameObject);
+                    Destroy(rightHandCardPos.GetChild(count - 2).gameObject);
+                    Destroy(rightHandCardPos.GetChild(count - 3).gameObject);
                     // 生成下家碰的牌
                     Transform freeCardArea = GetFreeExtraCardArea(rightExtraCardPos);
                     for (int i = 0; i < 3; i++)
