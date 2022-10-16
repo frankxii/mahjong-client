@@ -424,7 +424,7 @@ namespace MVC.View
                 playCardArrow.transform.SetParent(playCard.transform);
                 playCardArrow.transform.localPosition = Vector3.zero;
                 // 调整手牌
-                foreach (Transform child in leftHandCardPos)
+                foreach (Transform child in leftDrawCardPos)
                 {
                     Destroy(child.gameObject);
                 }
@@ -451,7 +451,7 @@ namespace MVC.View
                 playCardArrow.transform.SetParent(playCard.transform);
                 playCardArrow.transform.localPosition = Vector3.zero;
                 // 调整手牌
-                foreach (Transform child in rightHandCardPos)
+                foreach (Transform child in rightDrawCardPos)
                 {
                     Destroy(child.gameObject);
                 }
