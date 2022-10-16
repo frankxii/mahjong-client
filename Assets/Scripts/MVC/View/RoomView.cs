@@ -445,7 +445,7 @@ namespace MVC.View
                 playCard.GetComponent<Image>().sprite = _rightPlayCardMapping[data.card];
                 playCard.transform.localPosition = new Vector3(0, parent.childCount * 50);
                 // 下家出牌，先出的牌需要放在最下面以覆盖后出牌的layer，所以每次实例化时把object的索引设为0
-                parent.transform.SetSiblingIndex(0);
+                playCard.transform.SetSiblingIndex(0);
                 // 添加出牌指示箭头
                 playCardArrow.SetActive(true);
                 playCardArrow.transform.SetParent(playCard.transform);
@@ -459,7 +459,7 @@ namespace MVC.View
                 int count = rightHandCardPos.childCount;
                 while (count != data.remainHandCard)
                 {
-                    // 生成上家手牌，设定位置
+                    // 生成下家手牌，设定位置
                     GameObject cardObject = Instantiate(_rightHandCardPrefab, rightHandCardPos);
                     cardObject.transform.localPosition = new Vector3(0, -40 * count);
                     count++;
