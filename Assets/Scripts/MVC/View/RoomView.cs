@@ -171,6 +171,59 @@ namespace MVC.View
         }
 
         /// <summary>
+        /// 初始化房间，主要用于完成一场对局后按准备重新开始游戏，清除所有已生成的牌和重置对局数据
+        /// </summary>
+        public void InitRoom()
+        {
+            // 清除所有摸牌区的牌
+            foreach (Transform pos in new[] {selfDrawCardPos, oppositeDrawCardPos, leftDrawCardPos, rightDrawCardPos})
+            {
+                foreach (Transform card in pos)
+                {
+                    Destroy(card.gameObject);
+                }
+            }
+
+            // 清除所有手牌
+            foreach (Transform pos in new[] {selfHandCardPos, oppositeHandCardPos, leftHandCardPos, rightHandCardPos})
+            {
+                foreach (Transform card in pos)
+                {
+                    Destroy(card.gameObject);
+                }
+            }
+
+            // 清除所有出牌区的牌
+            foreach (Transform pos in new[]
+                     {
+                         selfPlayCardPos1, selfPlayCardPos2, oppositePlayCardPos1, oppositePlayCardPos2,
+                         leftPlayCardPos1, leftPlayCardPos2, rightPlayCardPos1, rightPlayCardPos2
+                     })
+            {
+                foreach (Transform card in pos)
+                {
+                    Destroy(card.gameObject);
+                }
+            }
+
+            // 清除所有碰杠的牌
+            Transform[] posArray = new[] {selfExtraCardPos, oppositeExtraCardPos, leftExtraCardPos, rightExtraCardPos};
+            foreach (Transform pos in posArray)
+            {
+                foreach (Transform area in pos)
+                {
+                    foreach (Transform card in area)
+                    {
+                        Destroy(card.gameObject);
+                    }
+                }
+            }
+
+            // 剩余牌数设置为0
+            txtRemainCard.text = "0";
+        }
+
+        /// <summary>
         /// 更新房间基础信息
         /// </summary>
         /// <param name="model"></param>
@@ -750,6 +803,16 @@ namespace MVC.View
             }
             else if (data.operationCode == OperationCode.Hu)
             {
+                // 清除其他玩家手牌
+                foreach (Transform position in new[] {leftDrawCardPos, rightHandCardPos, oppositeHandCardPos})
+                {
+                    foreach (Transform child in position)
+                    {
+                        Destroy(child.gameObject);
+                    }
+                }
+
+                // 以出牌形式展示其他玩家手牌
             }
         }
     }
