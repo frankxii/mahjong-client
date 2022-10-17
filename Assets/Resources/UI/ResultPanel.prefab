@@ -618,7 +618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.078431375}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -647,6 +647,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97836f2d6ff84331ba40bacb5d9a5ddd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  txtWinType: {fileID: 5620277450761095707}
+  imgSelfAvatar: {fileID: 507228938588926481}
+  txtSelfScore: {fileID: 2061713857019275698}
+  txtSelfWinType: {fileID: 8472277366231286622}
+  imgOppositeAvatar: {fileID: 4978691658979691454}
+  txtOppositeScore: {fileID: 1634103483248430375}
+  txtOppositeWinType: {fileID: 5061847955137937747}
+  imgLeftAvatar: {fileID: 9031825745135330145}
+  txtLeftScore: {fileID: 4289570268500723992}
+  txtLeftWinType: {fileID: 3238745588024258760}
+  imgRightAvatar: {fileID: 915313454835885985}
+  txtRightScore: {fileID: 5979250825754581229}
+  txtRightWinType: {fileID: 374863056777880704}
+  btnContinue: {fileID: 3939558360809578271}
+  btnClose: {fileID: 7357142891743910501}
 --- !u!1 &2557917653801162267
 GameObject:
   m_ObjectHideFlags: 0
