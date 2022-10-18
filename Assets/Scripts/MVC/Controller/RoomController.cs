@@ -39,7 +39,8 @@ namespace MVC.Controller
             NetworkManager.Instance.AddListener(MessageId.DealCard, OnDealCard);
             NetworkManager.Instance.AddListener(MessageId.DrawCardEvent, OnDrawCard);
             NetworkManager.Instance.AddListener(MessageId.PlayCardEvent, OnPlayCardEvent);
-            NetworkManager.Instance.AddListener(MessageId.OperationEvent, OnOperationEvent);
+            NetworkManager.Instance.AddListener(MessageId.PengGangEvent, OnPengGangEvent);
+            NetworkManager.Instance.AddListener(MessageId.HuEvent, OnHuEvent);
         }
 
         private void RemoveCallback()
@@ -50,7 +51,8 @@ namespace MVC.Controller
             NetworkManager.Instance.RemoveListener(MessageId.DealCard, OnDealCard);
             NetworkManager.Instance.RemoveListener(MessageId.DrawCardEvent, OnDrawCard);
             NetworkManager.Instance.RemoveListener(MessageId.PlayCardEvent, OnPlayCardEvent);
-            NetworkManager.Instance.RemoveListener(MessageId.OperationEvent, OnOperationEvent);
+            NetworkManager.Instance.RemoveListener(MessageId.PengGangEvent, OnPengGangEvent);
+            NetworkManager.Instance.RemoveListener(MessageId.HuEvent, OnHuEvent);
         }
 
         public override void Destroy()
@@ -179,10 +181,15 @@ namespace MVC.Controller
             });
         }
 
-        private void OnOperationEvent(string json)
+        private void OnPengGangEvent(string json)
         {
-            OperationEvnet data = ProtoUtil.Deserialize<OperationEvnet>(json);
-            view.OnOperationEvent(RoomModel.Instance.DealerWind, data);
+            PengGangEvnet data = ProtoUtil.Deserialize<PengGangEvnet>(json);
+            view.OnPengGangEvent(RoomModel.Instance.DealerWind, data);
+        }
+
+        private void OnHuEvent(string json)
+        {
+            view.OnHuEvent();
         }
     }
 }

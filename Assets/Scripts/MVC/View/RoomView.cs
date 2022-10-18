@@ -609,10 +609,10 @@ namespace MVC.View
             throw new Exception("未找到空闲的卡牌区域");
         }
 
-        public void OnOperationEvent(byte dealerWind, OperationEvnet data)
+        public void OnPengGangEvent(byte dealerWind, PengGangEvnet data)
         {
             SeatPos seat = DealerWindToSeatPos(dealerWind, data.dealerWind);
-            if (data.operationCode == OperationCode.Peng)
+            if (data.isPeng)
             {
                 // 生成碰的牌
                 if (seat == SeatPos.Self)
@@ -698,7 +698,7 @@ namespace MVC.View
                     }
                 }
             }
-            else if (data.operationCode == OperationCode.Gang)
+            else if (data.isGang)
             {
                 if (seat == SeatPos.Self)
                 {
@@ -801,19 +801,20 @@ namespace MVC.View
                     }
                 }
             }
-            else if (data.operationCode == OperationCode.Hu)
-            {
-                // 清除其他玩家手牌
-                foreach (Transform position in new[] {leftDrawCardPos, rightHandCardPos, oppositeHandCardPos})
-                {
-                    foreach (Transform child in position)
-                    {
-                        Destroy(child.gameObject);
-                    }
-                }
+        }
 
-                // 以出牌形式展示其他玩家手牌
+        public void OnHuEvent()
+        {
+            // 清除其他玩家手牌
+            foreach (Transform position in new[] {leftDrawCardPos, rightHandCardPos, oppositeHandCardPos})
+            {
+                foreach (Transform child in position)
+                {
+                    Destroy(child.gameObject);
+                }
             }
+
+            // 以出牌形式展示其他玩家手牌
         }
     }
 }
