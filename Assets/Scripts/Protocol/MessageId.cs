@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Protocol
 {
     // 通信协议消息ID
@@ -107,5 +109,15 @@ namespace Protocol
         public bool isPeng;
         public bool isGang;
         public byte operationCard;
+    }
+
+    public class PlayerHuResult
+    {
+        public byte dealerWind;
+        public bool isHu;
+        public byte huType;
+        public byte huCard;
+        public int score;
+        public List<byte> handCards = new();
     }
 }

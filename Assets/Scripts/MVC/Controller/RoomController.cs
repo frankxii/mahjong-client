@@ -189,7 +189,8 @@ namespace MVC.Controller
 
         private void OnHuEvent(string json)
         {
-            view.OnHuEvent();
+            List<PlayerHuResult> results = ProtoUtil.Deserialize<List<PlayerHuResult>>(json);
+            view.OnHuEvent(RoomModel.Instance.DealerWind, results);
         }
     }
 }

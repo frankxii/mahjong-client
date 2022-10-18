@@ -803,7 +803,7 @@ namespace MVC.View
             }
         }
 
-        public void OnHuEvent()
+        public void OnHuEvent(byte dealerWind, List<PlayerHuResult> results)
         {
             // 清除其他玩家手牌
             foreach (Transform position in new[] {leftDrawCardPos, rightHandCardPos, oppositeHandCardPos})
@@ -815,6 +815,42 @@ namespace MVC.View
             }
 
             // 以出牌形式展示其他玩家手牌
+            foreach (PlayerHuResult result in results)
+            {
+                SeatPos seat = DealerWindToSeatPos(dealerWind, result.dealerWind);
+                if (seat == SeatPos.Self)
+                {
+                }
+                else if (seat == SeatPos.Opposite)
+                {
+                    for (int index = 0; index < result.handCards.Count; index++)
+                    {
+                        // 对家和本家是共用的出牌prefab
+                        GameObject card = Instantiate(_selfPlayCardPrefab, oppositeHandCardPos);
+                        card.GetComponent<Image>().sprite = _selfPlayCardMapping[result.handCards[index]];
+                        card.transform.localPosition = new Vector3(index * 70, 0);
+                    }
+                }
+                else if (seat == SeatPos.Left)
+                {
+                    for (int index = 0; index < result.handCards.Count; index++)
+                    {
+                        GameObject card = Instantiate(_leftPlayCardPrefab, leftHandCardPos);
+                        card.GetComponent<Image>().sprite = _leftPlayCardMapping[result.handCards[index]];
+                        card.transform.localPosition = new Vector3(0, index * -50);
+                    }
+                }
+                else if (seat == SeatPos.Right)
+                {
+                    int count = result.handCards.Count;
+                    for (int index = count - 1; index > -1; index--)
+                    {
+                        GameObject card = Instantiate(_rightPlayCardPrefab, rightHandCardPos);
+                        card.GetComponent<Image>().sprite = _rightPlayCardMapping[result.handCards[index]];
+                        card.transform.localPosition = new Vector3(0, (count - 1 - index) * -50);
+                    }
+                }
+            }
         }
     }
 }
