@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using MVC.Base;
 using MVC.View;
+using Protocol;
 using UnityEngine;
 
 namespace MVC.Controller
@@ -12,6 +14,11 @@ namespace MVC.Controller
         {
             view.btnContinue.onClick.AddListener(() => Debug.Log("continue"));
             view.btnClose.onClick.AddListener(() => Destroy());
+        }
+
+        public void UpdateResult(byte dealerWind, List<PlayerHuResult> results)
+        {
+            view.UpdateResult(dealerWind, results);
         }
     }
 }

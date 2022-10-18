@@ -191,6 +191,8 @@ namespace MVC.Controller
         {
             List<PlayerHuResult> results = ProtoUtil.Deserialize<List<PlayerHuResult>>(json);
             view.OnHuEvent(RoomModel.Instance.DealerWind, results);
+            ResultController.Instance.ShowUI();
+            ResultController.Instance.UpdateResult(RoomModel.Instance.DealerWind, results);
         }
     }
 }
