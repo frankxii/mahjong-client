@@ -451,20 +451,11 @@ namespace MVC.View
                 playCardArrow.SetActive(true);
                 playCardArrow.transform.SetParent(playCard.transform);
                 playCardArrow.transform.localPosition = Vector3.zero;
-                // 调整手牌
-                foreach (Transform child in oppositeDrawCardPos)
-                {
-                    Destroy(child.gameObject);
-                }
-
-                int count = oppositeHandCardPos.childCount;
-                while (count != data.remainHandCard)
-                {
-                    // 生成对家手牌，设定位置
-                    GameObject cardObject = Instantiate(_oppositeHandCardPrefab, oppositeHandCardPos);
-                    cardObject.transform.localPosition = new Vector3(70 * count, 0);
-                    count++;
-                }
+                // 调整手牌，如果摸牌区有牌，去掉摸牌区的牌，否则去掉一张最左边的手牌
+                if (oppositeHandCardPos.childCount > 0)
+                    Destroy(oppositeDrawCardPos.GetChild(0).gameObject);
+                else
+                    Destroy(oppositeHandCardPos.GetChild(oppositeDrawCardPos.childCount - 1).gameObject);
             }
             else if (seat == SeatPos.Left)
             {
@@ -476,20 +467,11 @@ namespace MVC.View
                 playCardArrow.SetActive(true);
                 playCardArrow.transform.SetParent(playCard.transform);
                 playCardArrow.transform.localPosition = Vector3.zero;
-                // 调整手牌
-                foreach (Transform child in leftDrawCardPos)
-                {
-                    Destroy(child.gameObject);
-                }
-
-                int count = leftHandCardPos.childCount;
-                while (count != data.remainHandCard)
-                {
-                    // 生成上家手牌，设定位置
-                    GameObject cardObject = Instantiate(_leftHandCardPrefab, leftHandCardPos);
-                    cardObject.transform.localPosition = new Vector3(0, -40 * count);
-                    count++;
-                }
+                // 调整手牌，如果摸牌区有牌，去掉摸牌区的牌，否则去掉一张最左边的手牌
+                if (leftDrawCardPos.childCount > 0)
+                    Destroy(leftDrawCardPos.GetChild(0).gameObject);
+                else
+                    Destroy(leftHandCardPos.GetChild(0).gameObject);
             }
             else if (seat == SeatPos.Right)
             {
@@ -503,20 +485,11 @@ namespace MVC.View
                 playCardArrow.SetActive(true);
                 playCardArrow.transform.SetParent(playCard.transform);
                 playCardArrow.transform.localPosition = Vector3.zero;
-                // 调整手牌
-                foreach (Transform child in rightDrawCardPos)
-                {
-                    Destroy(child.gameObject);
-                }
-
-                int count = rightHandCardPos.childCount;
-                while (count != data.remainHandCard)
-                {
-                    // 生成下家手牌，设定位置
-                    GameObject cardObject = Instantiate(_rightHandCardPrefab, rightHandCardPos);
-                    cardObject.transform.localPosition = new Vector3(0, -40 * count);
-                    count++;
-                }
+                // 调整手牌，如果摸牌区有牌，去掉摸牌区的牌，否则去掉一张最左边的手牌
+                if (rightDrawCardPos.childCount > 0)
+                    Destroy(rightDrawCardPos.GetChild(0).gameObject);
+                else
+                    Destroy(rightHandCardPos.GetChild(rightHandCardPos.childCount - 1).gameObject);
             }
 
             // 根据可以操作的情况，生成操作列表，展示对应操作按钮
