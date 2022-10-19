@@ -636,7 +636,7 @@ namespace MVC.View
                     {
                         GameObject cardObject = Instantiate(_selfPlayCardPrefab, freeCardArea);
                         cardObject.GetComponent<Image>().sprite = _selfPlayCardMapping[data.operationCard];
-                        cardObject.transform.localPosition = new Vector3(71 * i, 0);
+                        cardObject.transform.localPosition = new Vector3(-71 * i, 0);
                     }
                 }
                 else if (seat == SeatPos.Left)
@@ -779,7 +779,7 @@ namespace MVC.View
         public void OnHuEvent(byte dealerWind, List<PlayerHuResult> results)
         {
             // 清除其他玩家手牌
-            foreach (Transform position in new[] {leftDrawCardPos, rightHandCardPos, oppositeHandCardPos})
+            foreach (Transform position in new[] {leftHandCardPos, rightHandCardPos, oppositeHandCardPos})
             {
                 foreach (Transform child in position)
                 {
